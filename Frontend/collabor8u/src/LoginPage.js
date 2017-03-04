@@ -18,7 +18,7 @@ class LoginPage extends React.Component{
     //     this.setState({ session_object: data.results });
     //   });
     cookie.save("accessToken", accessToken);
-    browserHistory.push('/home');
+    browserHistory.push('/home/');
   }
 
   render() {
