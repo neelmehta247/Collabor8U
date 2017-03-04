@@ -8,13 +8,16 @@
 .Logo {
   height: 50%;
   position: relative;
-  text-align: center;
-  left: 38%;
-  margin-bottom: 5%;
+  margin-bottom: 10%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  top: 25%;
 }
 
 .LoginButton {
   height: 50%;
+  margin-top: 5%;
 
 }
 
@@ -26,9 +29,7 @@
   animation: App-logo-spin infinite 20s linear;
   height: 50%;
   margin: 0;
-  position: absolute;
   bottom: 0;
-  display: block;
 
 
 }
