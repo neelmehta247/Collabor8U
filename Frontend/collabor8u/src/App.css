@@ -23,14 +23,4 @@
   to { transform: rotate(360deg); }
 }
 
-.facebook-login {
-  background: #3b5998;
-  height: 60px;
-  border: none;
-  padding-right: 30px;
-  padding-left: 30px;
-  font-size: 16px;
-  color: white;
-  text-decoration: none;
-  cursor: pointer;
-}
+

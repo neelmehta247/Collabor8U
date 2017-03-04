@@ -7,6 +7,10 @@
 
 .Logo {
   height: 50%;
+  position: relative;
+  text-align: center;
+  left: 38%;
+  margin-bottom: 5%;
 }
 
 .LoginButton {
@@ -20,8 +24,12 @@
 
 .AppLogo {
   animation: App-logo-spin infinite 20s linear;
-  height: 75%;
-  margin-top: 8%;
+  height: 50%;
+  margin: 0;
+  position: absolute;
+  bottom: 0;
+  display: block;
+
 
 }
 
@@ -61,4 +69,18 @@
 @keyframes AppLogo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+
+.facebook-login {
+  background: #3b5998;
+  height: 60px;
+  border: none;
+  padding-right: 30px;
+  padding-left: 30px;
+  font-size: 16px;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 30px;
 }
