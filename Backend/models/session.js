@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var sessionSchema = mongoose.Schema({
     session_token: String,
     active: {type: Boolean, default: true},
+    facebook_access_token: String,
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

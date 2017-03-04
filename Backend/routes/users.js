@@ -21,60 +21,103 @@ router.get('/', function (req, res) {
     });
 });
 
-router.post('/sign_up', function (request, result) {
-    User.findOne({facebook_access_token: request.body.access_token}, function (err, user) {
+router.post('/login', function (request, result) {
+    Session.findOne({facebook_access_token: request.body.access_token}, function (err, session) {
         if (err) {
             console.error(err);
             return result.status(500).send('error');
         }
 
-        if (user != null) {
-            return result.status(999).send('error');
-        }
-    });
-
-    graph.get('me', {access_token: request.body.access_token}, function (err, res) {
-        if (err) {
-            console.error(err);
-            return result.status(500).send('error');
-        }
-
-        graph.get(res.id.toString(), {fields: 'email,name'}, function (err, res) {
-            if (err) {
-                console.error(err);
-                return result.status(500).send('error');
-            }
-
-            var newUser = new User({
-                name: res.name,
-                facebook_access_token: request.body.facebook_access_token,
-                email: res.email
-            });
-            newUser.save(function (err, newUser) {
+        if (session != null) {
+            session.populate('user').exec(function (err, session) {
                 if (err) {
                     console.error(err);
                     return result.status(500).send('error');
                 }
 
-                var session = new Session({user: newUser._id});
-                session.save(function (err, session) {
+                if (session.active) {
+                    return result.send(session);
+                } else {
+                    var newSession = createNewSession(session.user, request.body.facebook_access_token);
+                    if (newSession == 'error') {
+                        return result.status(500).send('error');
+                    } else {
+                        return result.send(newSession);
+                    }
+                }
+            });
+        } else {
+            graph.get('me', {access_token: request.body.access_token}, function (err, res) {
+                if (err) {
+                    console.error(err);
+                    return result.status(500).send('error');
+                }
+
+                graph.get(res.id.toString(), {fields: 'email,name'}, function (err, res) {
                     if (err) {
                         console.error(err);
                         return result.status(500).send('error');
                     }
 
-                    session.populate('user').exec(function (err, session) {
+                    User.findOne({email: res.email}, function (err, user) {
                         if (err) {
                             console.error(err);
                             return result.status(500).send('error');
                         }
 
-                        result.send(session);
+                        if (user != null) {
+                            var session = createNewSession(user, request.body.facebook_access_token);
+                            if (session == 'error') {
+                                return result.status(500).send('error');
+                            } else {
+                                return result.send(session);
+                            }
+                        } else {
+                            var newUser = new User({
+                                name: res.name,
+                                email: res.email
+                            });
+                            newUser.save(function (err, newUser) {
+                                if (err) {
+                                    console.error(err);
+                                    return result.status(500).send('error');
+                                }
+
+                                var session = createNewSession(newUser, request.body.facebook_access_token);
+                                if (session == 'error') {
+                                    return result.status(500).send('error');
+                                } else {
+                                    return result.send(session);
+                                }
+                            });
+                        }
                     });
                 });
             });
-        });
+        }
     });
 });
+
+function createNewSession(user, access_token) {
+    var session = new Session({
+        user: user._id,
+        facebook_access_token: access_token
+    });
+    session.save(function (err, session) {
+        if (err) {
+            console.error(err);
+            return 'error';
+        }
+
+        session.populate('user').exec(function (err, session) {
+            if (err) {
+                console.error(err);
+                return 'error';
+            }
+
+            return session;
+        });
+    });
+}
 
 module.exports = router;
