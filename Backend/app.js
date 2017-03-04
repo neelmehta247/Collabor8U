@@ -7,7 +7,7 @@ var uristring =
     process.env.MONGOLAB_URI ||
     process.env.MONGOHQ_URL ||
     process.env.MONGODB_URI ||
-    'mongodb://localhost/test';
+    'mongodb://localhost/collabor8u';
 
 // The http server will listen to an appropriate port, or default to
 // port 5000.
