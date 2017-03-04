@@ -1,7 +1,9 @@
 import React from 'react';
+import {Link, Router, Route, browserHistory} from "react-router";
 import { FacebookLogin } from 'react-facebook-login-component';
+import cookie from 'react-cookie';
 import './LoginPage.css';
-import './App.css'
+import './App.css';
 import logo from './logo.svg';
 
 
@@ -15,7 +17,8 @@ class LoginPage extends React.Component{
     //   .then((data) => {
     //     this.setState({ session_object: data.results });
     //   });
-    this.props.router.push('/home/' + accessToken)
+    cookie.save("accessToken", accessToken);
+    browserHistory.push('/home');
   }
 
   render() {
