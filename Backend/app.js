@@ -34,9 +34,11 @@ app.use(bodyParser.json());
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var notebooks = require('./routes/notebooks');
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/notebooks', notebooks);
 
 // error handler
 app.use(function (err, req, res, next) {

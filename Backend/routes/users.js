@@ -22,6 +22,11 @@ router.get('/', function (req, res) {
 });
 
 router.post('/login', function (request, result) {
+    if (request.body.facebook_access_token === undefined) {
+        console.error('no token provided');
+        return result.status(400).send('no token provided');
+    }
+
     Session.findOne({facebook_access_token: request.body.access_token}, function (err, session) {
         if (err) {
             console.error(err);
@@ -47,7 +52,7 @@ router.post('/login', function (request, result) {
                 }
             });
         } else {
-            graph.get('me', {access_token: request.body.access_token}, function (err, res) {
+            graph.get('me', {access_token: request.body.facebook_access_token}, function (err, res) {
                 if (err) {
                     console.error(err);
                     return result.status(500).send('error');
