@@ -5,17 +5,19 @@ import $ from 'jquery';
 class Home extends React.Component {
   constructor(props) {
     super(props);
-    let url = "https://api.myjson.com/bins/yr75d";
+    let url = "https://api.myjson.com/bins";
     let accessToken = cookie.load("accessToken");
     this.state = {
       session_object: {},
     };
-    console.log(accessToken);
+
     $.ajax({
+      type:"POST",
       url: url,
+      data:'{"access_token":"' + accessToken + '"}',
       dataType: "json",
+    contentType:"application/json; charset=utf-8",
     }).done((data) => {
-      console.log(data.suh);
       this.setState({session_object: data})
     });
   }
