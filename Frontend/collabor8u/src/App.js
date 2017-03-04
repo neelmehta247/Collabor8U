@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import Login from './Login.js';
+import LoginPage from './LoginPage.js'
 import './App.css';
 
 class App extends Component {
@@ -18,4 +20,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default LoginPage;
