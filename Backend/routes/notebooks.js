@@ -61,6 +61,8 @@ router.post('/:id/add_user', function (request, result) {
 
                     user.notebooks.push(notebook);
                     user.save();
+
+                    return result.send(notebook);
                 });
             });
         }
