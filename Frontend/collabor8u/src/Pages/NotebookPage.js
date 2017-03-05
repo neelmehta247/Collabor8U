@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "../logo.svg";
 
 class NotebookPage extends React.Component {
     constructor() {

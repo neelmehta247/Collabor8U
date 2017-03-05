@@ -6,17 +6,26 @@ import './HomePage.css';
 import plus from "../img/plus.png";
 
 class Projects extends React.Component {
+    constructor() {
+        super();
+        this.notebookOnClick = this.notebookOnClick.bind(this);
+    }
+
+    notebookOnClick(event) {
+        browserHistory.push('/notebook/' + event.key);
+    }
+
     render() {
-        return <button className="NewProject" /* onClick={activateLasers} */ >
-            Project
+        return <button className="NewProject" onClick={this.notebookOnClick}>
+            {this.props.title}
         </button>;
     }
 }
 
 class HomePage extends React.Component {
-    constructor() {
-        super();
-        let url = "http://collabor8u.heroku.com/users/login";
+    constructor(props) {
+        super(props);
+        let url = "https://collabor8u.herokuapp.com/users/login";
         let accessToken = cookie.load("accessToken");
         this.state = {
             session_object: {},
@@ -24,8 +33,7 @@ class HomePage extends React.Component {
         };
         this.onAddBtnClick = this.onAddBtnClick.bind(this);
 
-        let obje = {facebook_access_token: accessToken};
-        console.log(JSON.stringify(obje));
+        var obje = {facebook_access_token: accessToken};
         $.ajax({
             dataType: "json",
             crossDomain: true,
@@ -33,15 +41,24 @@ class HomePage extends React.Component {
             method: 'POST',
             url: url,
             data: JSON.stringify(obje),
-        }).done((data) => {
-            this.setState({session_object: data})
-        }).fail(function() {
-            browserHistory.push('/');
+            error: (e) => {
+                console.log(e);
+                console.log("error");
+                if(e.status != "200") {
+                    browserHistory.push('/');
+                }
+            },
+            success: (data) => {
+                console.log(data);
+                console.log("success");
+                this.setState({session_object: data});
+                this.populateProjects();
+            },
         });
     }
 
     populateProjects() {
-
+        // TODO: foreach in state session_object, addItem(_title, _key)
     }
 
     addItem(_title, _key) {
