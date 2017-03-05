@@ -16,6 +16,7 @@ class Home extends React.Component {
       url: url,
       data:'{"access_token":"' + accessToken + '"}',
       dataType: "json",
+      contentType:"application/json;",
     }).done((data) => {
       this.setState({session_object: data})
     });
