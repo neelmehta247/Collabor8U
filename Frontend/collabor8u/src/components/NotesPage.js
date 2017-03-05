@@ -1,8 +1,8 @@
 /* global _ */
 
-import React from "react";
-import CardAddForm from "./CardAddForm";
-import CardsList from "./CardsList";
+import React from 'react';
+import CardAddForm from './CardAddForm';
+import CardsList from './CardsList';
 import Modal from "react-modal";
 import cookie from "react-cookie";
 import $ from "jquery";
@@ -20,8 +20,6 @@ const customStyle = {
     }
 };
 
-const socket = io('http://localhost:5000', {origins: '*:*'});
-
 class NotesPage extends React.Component {
     constructor(props) {
         super(props);
@@ -38,6 +36,9 @@ class NotesPage extends React.Component {
             cards: [],
             current_card: {},
         };
+
+        this.socket = io.connect('http://collabor8u.herokuapp.com/');
+
         this.modalOkButtonClick = this.modalOkButtonClick.bind(this);
         this.modalTextOnChange = this.modalTextOnChange.bind(this);
         this.modalTopicsOnChange = this.modalTopicsOnChange.bind(this);
@@ -47,12 +48,12 @@ class NotesPage extends React.Component {
 
         let parent = this;
 
-        socket.on('connect', () => {
+        this.socket.on('connect', () => {
             console.log('Connected');
-            socket.emit('join', {notebook: parent.state.notebook_id});
+            this.socket.emit('join', {notebook: parent.state.notebook_id});
         });
 
-        socket.on('beginEdit', (card) => {
+        this.socket.on('beginEdit', (card) => {
             let contained = false;
             let newCards = [];
             this.state.cards.forEach((stateCard) => {
@@ -69,7 +70,7 @@ class NotesPage extends React.Component {
             this.setState({cards: newCards});
         });
 
-        socket.on('finishEdit', (card)=> {
+        this.socket.on('finishEdit', (card)=> {
             let contained = false;
             let newCards = [];
             this.state.cards.forEach((stateCard) => {
@@ -86,11 +87,11 @@ class NotesPage extends React.Component {
             this.setState({cards: newCards});
         });
 
-        socket.on('edit', (card)=> {
+        this.socket.on('edit', (card)=> {
             let contained = false;
             let newCards = [];
             this.state.cards.forEach((stateCard) => {
-                if (stateCard._id.equals(card._id)) {
+                if (stateCard._id.toString() == card._id.toString()) {
                     contained = true;
                     newCards.push(card);
                 } else {
@@ -103,7 +104,7 @@ class NotesPage extends React.Component {
             this.setState({cards: newCards});
         });
 
-        socket.on('updateTitle', (card)=> {
+        this.socket.on('updateTitle', (card)=> {
             let contained = false;
             let newCards = [];
             this.state.cards.forEach((stateCard) => {
@@ -151,7 +152,7 @@ class NotesPage extends React.Component {
         this.setState({modal_current_text: e.target.value});
 
         if (this.state.modal_is_edit) {
-            socket.emit('edit', {
+            this.socket.emit('edit', {
                 notebook: this.state.notebook_id,
                 card_id: this.state.current_card,
                 text: e.target.value
@@ -163,7 +164,7 @@ class NotesPage extends React.Component {
         this.setState({modal_current_title: e.target.value});
 
         if (this.state.modal_is_edit) {
-            socket.emit('updateTitle', {
+            this.socket.emit('updateTitle', {
                 notebook: this.state.notebook_id,
                 card_id: this.state.current_card,
                 title: e.target.value
@@ -172,14 +173,14 @@ class NotesPage extends React.Component {
     }
 
     modalOkButtonClick(e) {
-        if (this.state.modal_current_topics &&
+        if(this.state.modal_current_topics &&
             this.state.modal_current_text &&
             this.state.modal_current_title) {
 
             let is_edit = this.state.modal_is_edit;
             let content = this.state.modal_current_text;
             if (is_edit) {
-                socket.emit('finishEdit', {notebook: this.state.notebook_id, card_id: this.state.current_card});
+                this.socket.emit('finishEdit', {notebook: this.state.notebook_id, card_id: this.state.current_card});
             } else {
                 let topics = this.state.modal_current_topics.split(',');
 
@@ -210,7 +211,7 @@ class NotesPage extends React.Component {
 
                         this.setState({modal_is_open: false});
 
-                        socket.emit('edit', {notebook: this.state.notebook_id, card_id: data._id, text: content});
+                        this.socket.emit('edit', {notebook: this.state.notebook_id, card_id: data._id, text: content});
                     },
                 });
             }
@@ -223,13 +224,11 @@ class NotesPage extends React.Component {
         // let isEdit = (opp == "edit");
 
         if (isEdit) {
-            socket.emit('beginEdit', {notebook: this.state.notebook_id, card_id: this.state.current_card});
+            this.socket.emit('beginEdit', {notebook: this.state.notebook_id, card_id: this.state.current_card});
         }
 
-        this.setState({
-            modal_is_open: true,
-            modal_is_edit: isEdit
-        });
+        this.setState({modal_is_open: true,
+                     modal_is_edit: isEdit});
     }
 
     createCard(tag) {
@@ -260,11 +259,11 @@ class NotesPage extends React.Component {
                 </Modal>
                 <div className="TopicHeader">Topics</div>
                 <div className="TopicBody">
-                    <CardAddForm createCard={this.createCard.bind(this)}/>
-                    <CardsList
-                        tags={this.state.topics}
-                        cards={this.state.cards}
-                    />
+                <CardAddForm createCard={this.createCard.bind(this)} />
+                <CardsList
+                    tags={this.state.topics}
+                    cards={this.state.cards}
+                />
                 </div>
             </div>
         );
