@@ -9,9 +9,14 @@ class CardAddForm extends React.Component {
 
     render() {
         return (
-                <form className="FormInput" onSubmit={this.handleCreate.bind(this)}>
-                    <button className="AddCard">Add Card</button>
-                </form>
+                <div>
+                    <form className="FormInput" onSubmit={this.handleCreate.bind(this)}>
+                        <button className="AddCard">Add Card</button>
+                    </form>
+                    <form className="FormInput2">
+                        <button className="AddCard"> Add Users </button>
+                    </form> 
+                </div>
         );
     }
 
