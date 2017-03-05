@@ -5,19 +5,22 @@ import $ from "jquery";
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        let url = "http://localhost:5000";
+        let url = "http://localhost:5000/users/login";
         let accessToken = cookie.load("accessToken");
         this.state = {
             session_object: {},
         };
-
+        var obje = {facebook_access_token: accessToken};
+        console.log(JSON.stringify(obje));
         $.ajax({
-            type: "POST",
-            url: url,
-            data: '{"facebook_access_token":"' + accessToken + '"}',
             dataType: "json",
-            contentType: "application/json; charset=utf-8",
+            crossDomain: true,
+            contentType: 'application/json',
+            method: 'POST',
+            url: url,
+            data: JSON.stringify(obje),
         }).done((data) => {
+            console.log(data);
             this.setState({session_object: data})
         });
     }
