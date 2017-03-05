@@ -1,6 +1,6 @@
 import _ from "lodash";
 import React from "react";
-import {Col, Row} from "react-bootstrap";
+import {Col, Row, Button} from "react-bootstrap";
 import ".././Notes.css";
 
 export default class CardListItem extends React.Component {
@@ -35,7 +35,7 @@ export default class CardListItem extends React.Component {
             topics.push(this.getTopic(id));
         });
         return _.map(topics, (topic) =>
-            (<button dataKey={topic._id}>{topic.name}</button>));
+            (<Button bsStyle="primary" dataKey={topic._id}>{topic.name}</Button>));
     }
 
     handleEditClick(event) {
