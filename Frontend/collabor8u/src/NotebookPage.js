@@ -12,9 +12,7 @@ class NotebookPage extends React.Component {
 
     render() {
         return (
-            <div>
-                //{content}
-            </div>
+            <div/>
         );
     }
 }
