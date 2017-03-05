@@ -56,7 +56,7 @@ module.exports = function (server) {
 
         socket.on('updateTitle', function (req) {
             Card.findOne({_id: req.card_id}, function (err, card) {
-                if (!error) {
+                if (!err) {
                     if (card != null) {
                         card.title = req.title;
                         card.save();
