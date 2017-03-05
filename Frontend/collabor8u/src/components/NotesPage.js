@@ -9,8 +9,6 @@ import $ from "jquery";
 import io from "socket.io-client";
 import "../Notes.css";
 
-const socket = io('http://collabor8u.herokuapp.com');
-
 const customStyle = {
     content: {
         top: '50%',
@@ -21,6 +19,8 @@ const customStyle = {
         transform: 'translate(-50%, -50%)'
     }
 };
+
+const socket = io('http://collabor8u.herokuapp.com');
 
 class NotesPage extends React.Component {
     constructor(props) {
@@ -40,6 +40,8 @@ class NotesPage extends React.Component {
         };
         this.modalOkButtonClick = this.modalOkButtonClick.bind(this);
         this.modalTextOnChange = this.modalTextOnChange.bind(this);
+        this.modalTopicsOnChange = this.modalTopicsOnChange.bind(this);
+        this.modalTitleOnChange = this.modalTitleOnChange.bind(this);
 
         this.setNotebookState();
 
@@ -170,41 +172,48 @@ class NotesPage extends React.Component {
     }
 
     modalOkButtonClick(e) {
-        let is_edit = this.state.modal_is_edit;
-        let content = this.state.modal_current_text;
-        if (is_edit) {
-            socket.emit('finishEdit', {notebook: this.state.notebook_id, card_id: this.state.current_card});
-        } else {
-            let topics = this.state.modal_current_topics.split(',');
+        if(this.state.modal_current_topics &&
+            this.state.modal_current_text &&
+            this.state.modal_current_title) {
 
-            let url = "http://collabor8u.herokuapp.com/notebooks/" + this.state.notebook_id + "/cards/new";
-            let object = {
-                session_token: this.state.session_token,
-                title: this.state.modal_current_title,
-                topics: topics
-            };
+            let is_edit = this.state.modal_is_edit;
+            let content = this.state.modal_current_text;
+            if (is_edit) {
+                socket.emit('finishEdit', {notebook: this.state.notebook_id, card_id: this.state.current_card});
+            } else {
+                let topics = this.state.modal_current_topics.split(',');
 
-            $.ajax({
-                dataType: "json",
-                crossDomain: true,
-                contentType: 'application/json',
-                method: 'POST',
-                data: JSON.stringify(object),
-                url: url,
-                error: (e) => {
-                    console.log(e);
-                    console.log("status: " + e.status);
-                },
-                success: (data) => {
-                    let cards = this.state.cards;
-                    cards.push(data);
-                    this.setState({
-                        cards: cards
-                    });
+                let url = "http://collabor8u.herokuapp.com/notebooks/" + this.state.notebook_id + "/cards/new";
+                let object = {
+                    session_token: this.state.session_token,
+                    title: this.state.modal_current_title,
+                    topics: topics
+                };
 
-                    socket.emit('edit', {notebook: this.state.notebook_id, card_id: data._id, text: content});
-                },
-            });
+                $.ajax({
+                    dataType: "json",
+                    crossDomain: true,
+                    contentType: 'application/json',
+                    method: 'POST',
+                    data: JSON.stringify(object),
+                    url: url,
+                    error: (e) => {
+                        console.log(e);
+                        console.log("status: " + e.status);
+                    },
+                    success: (data) => {
+                        let cards = this.state.cards;
+                        cards.push(data);
+                        this.setState({
+                            cards: cards
+                        });
+
+                        this.setState({modal_is_open: false});
+
+                        socket.emit('edit', {notebook: this.state.notebook_id, card_id: data._id, text: content});
+                    },
+                });
+            }
         }
     }
 
