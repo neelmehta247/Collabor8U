@@ -35,7 +35,7 @@ export default class CardListItem extends React.Component {
             topics.push(this.getTopic(id));
         });
         return _.map(topics, (topic) =>
-            (<Button bsStyle="primary" dataKey={topic._id}>{topic.name}</Button>));
+            (<Button bsStyle="primary" data-key={topic._id} onClickHandler={this.props.onClickHandlerForTopics}>{topic.name}</Button>));
     }
 
     handleEditClick(event) {
