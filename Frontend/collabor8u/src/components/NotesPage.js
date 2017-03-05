@@ -87,7 +87,9 @@ class NotesPage extends React.Component {
             if (!contained) {
                 this.state.cards.push(card);
             }
-            this.setState({cards: this.state.cards});
+            this.forceUpdate();
+            this.setNotebookState();
+            parent.setState({cards: this.state.cards});
         });
 
         this.socket.on('edit', (card)=> {
