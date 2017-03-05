@@ -23,7 +23,7 @@ class NotesPage extends React.Component {
                 <div className="TopicBody">
                 <CardAddForm createCard={this.createCard.bind(this)} />
                 <CardsList
-                    tags={this.state.tags}
+                    tags={this.state.topics}
                     cards={this.state.cards}
                     toggleTask={this.toggleTask.bind(this)}
                     saveTask={this.saveTask.bind(this)}
