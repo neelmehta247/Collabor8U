@@ -139,6 +139,7 @@
     width: 66.66%;
 }
 
+<<<<<<< Updated upstream
 .CartTitle {
 	width: 100%;
 }
@@ -156,4 +157,11 @@
     margin-right:auto;
     height:auto;
     width:auto;
+=======
+
+.EditBtn {
+	height: 50px;
+	width: 50px;
+	background-color: yellow;
+>>>>>>> Stashed changes
 }

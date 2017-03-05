@@ -37,11 +37,17 @@ export default class CardListItem extends React.Component {
 
     render() {
         return (
+<<<<<<< Updated upstream
             <Col md={3} className="CardLst">
             <div className="wrapper">
                 <Row className="CartTitle">{this.state.title}</Row>
                 <Row className="CartTags">{this.renderTopics()}</Row>
                 <Row className="CartBody">{this.state.body}</Row>
+=======
+            <div className="CardLst">
+                <p>{this.state.body}</p>
+                <button className="EditBtn"> Edit </button>
+>>>>>>> Stashed changes
             </div>
             </Col>
         );
