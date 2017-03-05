@@ -1,5 +1,5 @@
-import React from 'react';
-import '.././Notes.css'
+import React from "react";
+import ".././Notes.css";
 
 export default class CardListItem extends React.Component {
     constructor(props) {

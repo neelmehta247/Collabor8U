@@ -1,5 +1,5 @@
-import React from 'react';
-import '.././Notes.css'
+import React from "react";
+import ".././Notes.css";
 
 export default class TopicListItem extends React.Component {
     constructor(props) {
@@ -13,7 +13,7 @@ export default class TopicListItem extends React.Component {
     render() {
         return (
             <div className="TopicLst">
-            {this.props.title}
+                {this.props.title}
             </div>
         );
     }

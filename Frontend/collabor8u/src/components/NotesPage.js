@@ -1,8 +1,8 @@
 /* global _ */
 
-import React from 'react';
-import CardAddForm from './CardAddForm';
-import CardsList from './CardsList';
+import React from "react";
+import CardAddForm from "./CardAddForm";
+import CardsList from "./CardsList";
 import Modal from "react-modal";
 import cookie from "react-cookie";
 import $ from "jquery";
@@ -94,15 +94,15 @@ class NotesPage extends React.Component {
                 if (stateCard._id.toString() == card._id.toString()) {
                     contained = true;
                     newCards.push(card);
-                        console.log(newCards);
+                    console.log(newCards);
                 } else {
                     newCards.push(stateCard);
-                        console.log(newCards);
+                    console.log(newCards);
                 }
             });
             if (!contained) {
                 newCards.push(card);
-                    console.log(newCards);
+                console.log(newCards);
             }
             this.setState({cards: newCards});
         });
@@ -177,7 +177,7 @@ class NotesPage extends React.Component {
     }
 
     modalOkButtonClick(e) {
-        if(this.state.modal_current_topics &&
+        if (this.state.modal_current_topics &&
             this.state.modal_current_text &&
             this.state.modal_current_title) {
 
@@ -226,8 +226,10 @@ class NotesPage extends React.Component {
             this.socket.emit('beginEdit', {notebook: this.state.notebook_id, card_id: this.state.current_card});
         }
 
-        this.setState({modal_is_open: true,
-                     modal_is_edit: isEdit});
+        this.setState({
+            modal_is_open: true,
+            modal_is_edit: isEdit
+        });
     }
 
     createCard(tag) {
@@ -256,11 +258,11 @@ class NotesPage extends React.Component {
                 </Modal>
                 <div className="TopicHeader">Topics</div>
                 <div className="TopicBody">
-                <CardAddForm createCard={this.createCard.bind(this)} />
-                <CardsList
-                    topics={this.state.topics}
-                    cards={this.state.cards}
-                />
+                    <CardAddForm createCard={this.createCard.bind(this)}/>
+                    <CardsList
+                        topics={this.state.topics}
+                        cards={this.state.cards}
+                    />
                 </div>
             </div>
         );

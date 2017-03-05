@@ -1,6 +1,5 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import '.././Notes.css'
+import React from "react";
+import ".././Notes.css";
 
 class CardAddForm extends React.Component {
     constructor(props) {
@@ -9,14 +8,14 @@ class CardAddForm extends React.Component {
 
     render() {
         return (
-                <div>
-                    <form className="FormInput" onSubmit={this.handleCreate.bind(this)}>
-                        <button className="AddCard">Add Card</button>
-                    </form>
-                    <form className="FormInput2">
-                        <button className="AddCard"> Add Users </button>
-                    </form> 
-                </div>
+            <div>
+                <form className="FormInput" onSubmit={this.handleCreate.bind(this)}>
+                    <button className="AddCard">Add Card</button>
+                </form>
+                <form className="FormInput2">
+                    <button className="AddCard"> Add Users</button>
+                </form>
+            </div>
         );
     }
 

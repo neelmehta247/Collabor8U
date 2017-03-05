@@ -3,25 +3,27 @@ import cookie from "react-cookie";
 import {browserHistory} from "react-router";
 import Modal from "react-modal";
 import $ from "jquery";
-import './HomePage.css';
+import "./HomePage.css";
 import plus from "../img/plus.png";
 
 const customStyle = {
-  content : {
-    top                   : '50%',
-    left                  : '50%',
-    right                 : 'auto',
-    bottom                : 'auto',
-    marginRight           : '-50%',
-    transform             : 'translate(-50%, -50%)'
-  }
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)'
+    }
 };
 
 class Notebook extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {title: props.title,
-                     data_key:props.dataKey,};
+        this.state = {
+            title: props.title,
+            data_key: props.dataKey,
+        };
         this.notebookOnClick = this.notebookOnClick.bind(this);
     }
 
@@ -70,9 +72,11 @@ class HomePage extends React.Component {
             },
             success: (data) => {
                 cookie.save("session_token", data.session_token);
-                this.setState({session_token: data.session_token,
-                            user_id: data.user._id,
-                            user: data.user});
+                this.setState({
+                    session_token: data.session_token,
+                    user_id: data.user._id,
+                    user: data.user
+                });
                 this.populateNotebooks();
             },
         });
@@ -137,8 +141,10 @@ class HomePage extends React.Component {
         console.log(this.state.modal_text);
         // Trigger project creation event
         let url = "https://collabor8u.herokuapp.com/notebooks/create";
-        var obje = {name: this.state.modal_text,
-                    session_token: this.state.session_token};
+        var obje = {
+            name: this.state.modal_text,
+            session_token: this.state.session_token
+        };
         $.ajax({
             dataType: "json",
             crossDomain: true,
@@ -170,17 +176,17 @@ class HomePage extends React.Component {
                         <button onClick={this.modalOkButtonClick}>Ok</button>
                     </Modal>
                     <div className="Header"> PROJECTS</div>
-                        <div className="MainTable">
-                            <button className="addBtn" onClick={this.onAddBtnClick}>
-                                <img src={plus} className="PlusImg" alt="plus"/>
-                            </button>
+                    <div className="MainTable">
+                        <button className="addBtn" onClick={this.onAddBtnClick}>
+                            <img src={plus} className="PlusImg" alt="plus"/>
+                        </button>
 
-                            <div className="ChildBtn">
-                                {this.state.inputList}
-                            </div>
+                        <div className="ChildBtn">
+                            {this.state.inputList}
                         </div>
                     </div>
                 </div>
+            </div>
         );
     }
 }

@@ -4,8 +4,6 @@ import {FacebookLogin} from "react-facebook-login-component";
 import cookie from "react-cookie";
 import "./LoginPage.css";
 import logo from "../logo.svg";
-
-import Notes from ".././Notes.css";
 import ".././Notes.css";
 
 
