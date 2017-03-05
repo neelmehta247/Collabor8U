@@ -30,13 +30,15 @@
 	background-color: white;
 	font-family: 'Raleway';
 	height: 50px;
-	display: block;
 	padding: 20px;
 	border: solid black 2px;
 	border-radius: 10px;
 	margin-top: 10px;
-	width: 25%;
-	margin-left: 20px;
+	margin-right: 40px;
+	margin-left: 40px;
+	text-align: center;
+	justify-content: center;
+	display: flex;
 }
 
 
@@ -70,7 +72,7 @@
 
 .TagCol {
 	height: 100%;
-	width: 15%;
+	width: 33.33%;
 	display: inline-block;
 	font-size: 20px;
 	font-family: 'Raleway';
@@ -81,9 +83,8 @@
 
 .CardCol {
 	height: 100%;
-	width: 75%;
+	width: 66.66%;
 	text-align: center;
-	margin-right: 5%;
 	float: right;
 	font-size: 20px;
 	color: white;
@@ -94,25 +95,37 @@
 }
 
 
+.AddUser {
+	background-color: 
+}
+
+
 
 .AddCard {
 	border: none;
 	background-color: black;
 	color: white;
 	font-family: 'Raleway';
-	width: 100%;
+	width: 100px;
 	display: inherit;
 	padding: 12px;
 	font-size: 20px;
 	font-weight: 700;
+	margin-bottom: 30%;
+	border-radius: 15px;
 }
 
 .FormInput {
 	position:fixed;
-    bottom:50px;
-    right:50px;
-    height: 16%;
+    bottom:100px;
+    right:40px;
 
+}
+
+.FormInput2 {
+	position:fixed;
+    bottom:0px;
+    right:40px;
 }
 
 .FormWrapper {
@@ -127,13 +140,14 @@
 }
 
 .LeftPanel {
-	float: left;
+	display: inline-block;
 	height: 100%;
 	width: 33.33%;
 }
 
 .RightPanel {
-	float: left;
+	float: right;
+	display: inline-block;
 	height: 100%;
-	width: 63%;
+	width: 66.66%;
 }
