@@ -1,89 +1,91 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway');
 
 .Main {
-    height: 100vh;
-    background-color: #1C3760;
+  height: 100vh;
+  background-color: #1C3760;
 }
 
+
 .Logo {
-    height: 50%;
-    position: relative;
-    margin-bottom: 10%;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    top: 25%;
-    z-index: -1;
+  height: 50%;
+  position: relative;
+  margin-bottom: 10%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  top: 25%;
+  z-index: -1;
 }
 
 .LoginButton {
-    height: 50%;
-    margin-top: 5%;
+  height: 50%;
+  margin-top: 5%;
 
 }
 
 .App {
-    text-align: center;
+  text-align: center;
 }
 
 .AppLogo {
-    animation: App-logo-spin infinite 20s linear;
-    height: 50%;
-    margin: 0;
-    bottom: 0;
+  animation: App-logo-spin infinite 20s linear;
+  height: 50%;
+  margin: 0;
+  bottom: 0;
+
 
 }
 
 .App-header {
-    background-color: #222;
-    height: 150px;
-    padding: 20px;
-    color: white;
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
 }
 
 .LoginContainer {
-    text-align: center;
-    width: 100%;
-    position: fixed;
-    height: 100%;
+  text-align: center;
+  width: 100%;
+  position: fixed;
+  height: 100%;
 }
 
 .LoginForm {
-    height: 50%;
-    width: 40%;
-    background-color: white;
-    display: inline-block;
-    margin: 0;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-    border-style: solid;
-    border-color: black;
-    border-width: 10px;
+  height: 50%;
+  width: 40%;
+  background-color: white;
+  display: inline-block;
+  margin: 0;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+  border-style: solid;
+  border-color: black;
+  border-width: 10px;
 }
 
 .App-intro {
-    font-size: large;
+  font-size: large;
 }
 
 @keyframes AppLogo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
+
 .facebook-login {
-    background: #3b5998;
-    height: 60px;
-    border: none;
-    padding-right: 30px;
-    padding-left: 30px;
-    font-size: 16px;
-    color: white;
-    text-decoration: none;
-    cursor: pointer;
-    border-radius: 30px;
+  background: #3b5998;
+  height: 60px;
+  border: none;
+  padding-right: 30px;
+  padding-left: 30px;
+  font-size: 16px;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  border-radius: 30px;
+  font-family: 'Raleway';
+
 }
