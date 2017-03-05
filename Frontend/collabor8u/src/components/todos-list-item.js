@@ -1,4 +1,5 @@
 import React from 'react';
+import '.././Notes.css'
 
 export default class TodosListItem extends React.Component {
     constructor(props) {
@@ -19,47 +20,52 @@ export default class TodosListItem extends React.Component {
 
         if (this.state.isEditing) {
             return (
-                <td>
+                <div>
                     <form onSubmit={this.onSaveClick.bind(this)}>
                         <input type="text" defaultValue={task} ref="editInput" />
                     </form>
-                </td>
+                </div>
             );
         }
 
         return (
-            <td style={taskStyle}
+            <div style={taskStyle}
                 onClick={this.props.toggleTask.bind(this, task)}
             >
                 {task}
-            </td>
+            </div>
         );
     }
 
     renderActionsSection() {
         if (this.state.isEditing) {
             return (
-                <td>
+                <div>
                     <button onClick={this.onSaveClick.bind(this)}>Save</button>
                     <button onClick={this.onCancelClick.bind(this)}>Cancel</button>
-                </td>
+                </div>
             );
         }
 
         return (
-            <td>
-                <button onClick={this.onEditClick.bind(this)}>Edit</button>
-                <button onClick={this.props.deleteTask.bind(this, this.props.task)}>Delete</button>
-            </td>
+            <div>
+                <button className="Edit" onClick={this.onEditClick.bind(this)}>Edit</button>
+                <button className="Del" onClick={this.props.deleteTask.bind(this, this.props.task)}>Delete</button>
+            </div>
         );
     }
 
     render() {
         return (
-            <tr>
-                {this.renderTaskSection()}
-                {this.renderActionsSection()}
-            </tr>
+            <div>
+                <div className="Tags"> </div>
+                <div className="TagCard">
+                    {this.renderTaskSection()}
+                    {this.renderActionsSection()} 
+                </div>
+                <div className="Cards">
+                </div>
+            </div>
         );
     }
 

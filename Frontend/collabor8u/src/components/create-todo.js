@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import '.././Notes.css'
 
 export default class TodosList extends React.Component {
     constructor(props) {
@@ -18,11 +19,15 @@ export default class TodosList extends React.Component {
 
     render() {
         return (
-            <form onSubmit={this.handleCreate.bind(this)}>
-                <input type="text" placeholder="What do I need to do?" ref="createInput" />
-                <button>Create</button>
-                {this.renderError()}
-            </form>
+            
+                <form className="FormInput" onSubmit={this.handleCreate.bind(this)}>
+                <div className="FormWrapper">
+                    <input className="InputStyle" type="text" placeholder="What do I need to do?" ref="createInput" />
+                    <button className="AddTask">Create</button>
+                </div>
+                    {this.renderError()}
+                </form>
+            
         );
     }
 

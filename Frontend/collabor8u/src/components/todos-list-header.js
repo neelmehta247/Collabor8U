@@ -1,14 +1,14 @@
 import React from 'react';
+import '.././Notes.css'
 
 export default class TodosListHeader extends React.Component {
     render() {
         return (
-            <thead>
-                <tr>
-                    <th>Task</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
+                <div className="TopicBody">
+                    <div className="TagCol">Tags</div>
+                    <div className="ActionCol">Cards</div>
+                </div>
+
         );
     }
 }
