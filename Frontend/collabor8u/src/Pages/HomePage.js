@@ -17,7 +17,7 @@ const customStyle = {
   }
 };
 
-class Projects extends React.Component {
+class Notebook extends React.Component {
     constructor(props) {
         super(props);
         this.state = {title: props.title,
@@ -32,7 +32,7 @@ class Projects extends React.Component {
 
     render(props) {
         return (
-            <button className="NewProject" dataKey={this.props.key} onClick={this.notebookOnClick}>
+            <button className="NewNotebook" dataKey={this.props.key} onClick={this.notebookOnClick}>
                 {this.props.title}
             </button>
         );
@@ -72,7 +72,7 @@ class HomePage extends React.Component {
                 this.setState({session_token: data.session_token,
                             user_id: data.user._id,
                             user: data.user});
-                this.populateProjects();
+                this.populateNotebooks();
             },
         });
     }
@@ -93,12 +93,12 @@ class HomePage extends React.Component {
             },
             success: (data) => {
                 this.setState({user: data});
-                this.populateProjects();
+                this.populateNotebooks();
             },
         });
     }
 
-    populateProjects() {
+    populateNotebooks() {
         const notebooks = this.state.user.notebooks;
         this.setState({inputList: []});
         this.forceUpdate();
@@ -123,7 +123,7 @@ class HomePage extends React.Component {
     addItem(_title, _key) {
         const inputList = this.state.inputList;
         this.setState({
-            inputList: inputList.concat(<Projects dataKey={_key} title={_title}/>)
+            inputList: inputList.concat(<Notebook dataKey={_key} title={_title}/>)
         });
     }
 
