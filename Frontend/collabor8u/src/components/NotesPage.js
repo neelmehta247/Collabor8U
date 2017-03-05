@@ -128,7 +128,7 @@ class NotesPage extends React.Component {
 
     editCard(card) {
         this.setState({
-            modal_current_topics: card.topics.join(','),
+            modal_current_topics: card.topics.map((topic) => topic.name).join(','),
             modal_current_text: card.text,
             modal_current_title: card.title,
             current_card: card._id,
