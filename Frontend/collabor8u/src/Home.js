@@ -5,7 +5,7 @@ import $ from "jquery";
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        let url = "http://localhost:5000/users/login";
+        let url = "https://collabor8u.herokuapp.com/users/login";
         let accessToken = cookie.load("accessToken");
         this.state = {
             session_object: {},
