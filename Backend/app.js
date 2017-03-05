@@ -57,3 +57,5 @@ app.use(function (err, req, res, next) {
 var server = app.listen(theport, function () {
     console.log('App listening at %d', theport);
 });
+
+require('./socket')(server);

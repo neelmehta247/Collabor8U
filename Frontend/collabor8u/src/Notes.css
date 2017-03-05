@@ -1,0 +1,27 @@
+
+
+.NotesMain {
+	background-color: #1C3760;
+	height: 100vh;
+}
+
+
+.TopicHeader {
+	width: 100%;
+	background-color: #1C3760;
+	height: 5%;
+}
+
+.LeftCol {
+	height: 100%;
+	width: 20%;
+}
+
+.RightCol {
+	height: 100%;
+	width: 80%;
+}
+
+.NewCard {
+	background-color: yellow;
+}
