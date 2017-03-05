@@ -1,6 +1,6 @@
 var Card = require('./models/card');
 
-var socket = function (server) {
+module.exports = function (server) {
     var io = require('socket.io')(server);
 
     io.on('connection', function (socket) {
@@ -40,6 +40,8 @@ var socket = function (server) {
         });
 
         socket.on('edit', function (req) {
+            console.log(req);
+
             Card.findOne({_id: req.card_id}, function (err, card) {
                 if (!err) {
                     if (card != null) {
@@ -65,8 +67,4 @@ var socket = function (server) {
             });
         });
     });
-
-    module.exports = io;
 };
-
-module.exports = socket;

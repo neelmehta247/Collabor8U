@@ -111,27 +111,27 @@ router.post('/:id/cards/new', function (request, result) {
                     notebook.save();
 
                     request.body.topics.forEach(function (topic) {
-                        Topic.findOne({name: topic, notebook: notebook._id}, function (err, topic) {
+                        Topic.findOne({name: topic, notebook: notebook._id}, function (err, badTopic) {
                             if (err) {
                                 console.error(err);
                                 return result.status(500).send('error');
                             }
 
-                            if (topic == null) {
+                            if (badTopic == null) {
                                 var newTopic = new Topic({name: topic.trim(), notebook: notebook._id});
                                 newTopic.cards.push(newCard);
                                 newTopic.save();
 
-                                notebook.topics.push(topic);
+                                notebook.topics.push(newTopic);
                                 notebook.save();
 
                                 newCard.topics.push(newTopic);
                                 newCard.save();
                             } else {
-                                topic.cards.push(newCard);
-                                topic.save();
+                                badTopic.cards.push(newCard);
+                                badTopic.save();
 
-                                newCard.topics.push(topic);
+                                newCard.topics.push(badTopic);
                                 newCard.save();
                             }
                         });
