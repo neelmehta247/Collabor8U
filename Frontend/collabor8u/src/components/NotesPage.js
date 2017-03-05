@@ -1,8 +1,8 @@
 /* global _ */
 
-import React from 'react';
-import CardAddForm from './CardAddForm';
-import CardsList from './CardsList';
+import React from "react";
+import CardAddForm from "./CardAddForm";
+import CardsList from "./CardsList";
 import Modal from "react-modal";
 import cookie from "react-cookie";
 import $ from "jquery";
@@ -20,7 +20,7 @@ const customStyle = {
     }
 };
 
-const socket = io.connect('http://collabor8u.herokuapp.com');
+const socket = io('http://localhost:5000', {origins: '*:*'});
 
 class NotesPage extends React.Component {
     constructor(props) {
@@ -172,7 +172,7 @@ class NotesPage extends React.Component {
     }
 
     modalOkButtonClick(e) {
-        if(this.state.modal_current_topics &&
+        if (this.state.modal_current_topics &&
             this.state.modal_current_text &&
             this.state.modal_current_title) {
 
@@ -226,8 +226,10 @@ class NotesPage extends React.Component {
             socket.emit('beginEdit', {notebook: this.state.notebook_id, card_id: this.state.current_card});
         }
 
-        this.setState({modal_is_open: true,
-                     modal_is_edit: isEdit});
+        this.setState({
+            modal_is_open: true,
+            modal_is_edit: isEdit
+        });
     }
 
     createCard(tag) {
@@ -258,11 +260,11 @@ class NotesPage extends React.Component {
                 </Modal>
                 <div className="TopicHeader">Topics</div>
                 <div className="TopicBody">
-                <CardAddForm createCard={this.createCard.bind(this)} />
-                <CardsList
-                    tags={this.state.topics}
-                    cards={this.state.cards}
-                />
+                    <CardAddForm createCard={this.createCard.bind(this)}/>
+                    <CardsList
+                        tags={this.state.topics}
+                        cards={this.state.cards}
+                    />
                 </div>
             </div>
         );
