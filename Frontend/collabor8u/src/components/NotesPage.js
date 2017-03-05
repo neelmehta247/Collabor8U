@@ -125,6 +125,15 @@ class NotesPage extends React.Component {
         });
     }
 
+    editCallback(card) {
+        this.setState({
+            modal_current_topics: card.topics,
+            modal_current_text: card.text,
+            modal_current_title:card.title,
+        });
+        this.openModal(true);
+    }
+
     setNotebookState() {
         let url = "http://collabor8u.herokuapp.com/notebooks/" + this.state.notebook_id;
 
@@ -249,11 +258,11 @@ class NotesPage extends React.Component {
                     contentLabel="Add Project">
                     <h1>Notes</h1>
                     <input placeholder="Title"
-                           onChange={this.modalTitleOnChange}/>
-                    <input placeholder="Text" onChange={this.modalTextOnChange}/>
+                           onChange={this.modalTitleOnChange}>{this.state.modal_current_title}</input>
+                    <input placeholder="Text" onChange={this.modalTextOnChange}>{this.state.modal_current_text}</input>
                     <input placeholder="Topics"
                            onChange={this.modalTopicsOnChange}
-                           disabled={this.state.modal_is_edit}/>
+                           disabled={this.state.modal_is_edit}>{this.state.modal_current_topics}</input>
                     <button onClick={this.modalOkButtonClick}>Ok</button>
                 </Modal>
                 <div className="TopicHeader">Topics</div>
