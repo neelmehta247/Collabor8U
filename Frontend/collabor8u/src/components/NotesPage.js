@@ -76,7 +76,6 @@ class NotesPage extends React.Component {
 
         this.socket.on('finishEdit', (card)=> {
             let contained = false;
-            let newCards = [];
             this.state.cards.forEach((stateCard) => {
                 if (stateCard._id.toString() == card._id.toString()) {
                     contained = true;
@@ -87,7 +86,6 @@ class NotesPage extends React.Component {
             if (!contained) {
                 this.state.cards.push(card);
             }
-            this.setState({cards: newCards});
         });
 
         this.socket.on('edit', (card)=> {
