@@ -161,5 +161,16 @@
 .EditBtn {
 	height: 50px;
 	width: 50px;
-	background-color: yellow;
+	background-color: black;
+	border: none;
+	color: white;
+	font-family: 'Raleway';
+	font-size: 14px;
+	border-radius: 10px;
 }
+
+
+
+
+
+
