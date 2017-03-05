@@ -6,6 +6,9 @@ import './LoginPage.css';
 import './App.css';
 import logo from './logo.svg';
 
+import Projects from './Projects.js'
+import './Projects.css'
+
 
 class LoginPage extends React.Component{
   responseFacebook (response) {
@@ -52,3 +55,8 @@ class LoginPage extends React.Component{
 }
 
 export default LoginPage;
+
+// export default Projects;
+
+
+

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from "react-dom";
 import './Projects.css';
+import plus from './img/plus.png';
 
 
 
@@ -29,8 +30,15 @@ class Form extends React.Component {
     render() {
         return (
             <div className="Main">
-                <button className="addBtn" onClick={this.onAddBtnClick}>Click to add a Project</button>
-                {this.state.inputList}
+                <div className="Container">
+                    <div className="Header"> PROJECTS </div>
+                        <div className="MainTable">
+                            <button className="addBtn" onClick={this.onAddBtnClick}>
+                                <img src={plus} className="PlusImg" alt="plus" />
+                            </button>
+                            {this.state.inputList}
+                        </div>
+                </div>
             </div>
         );
     }
