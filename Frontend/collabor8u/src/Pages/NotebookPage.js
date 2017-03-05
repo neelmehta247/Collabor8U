@@ -27,9 +27,12 @@ class NotebookPage extends React.Component {
             modal_is_open: false,
             modal_is_edit: false,
             modal_current_text: "",
+            modal_current_title: "",
+            modal_current_topics: "",
             notebook_id: this.props.params.notebookId,
             topics: "",
             cards: "",
+            current_card: "",
         };
         this.modalOkButtonClick = this.modalOkButtonClick.bind(this);
         this.modalTextOnChange = this.modalTextOnChange.bind(this);
@@ -134,20 +137,48 @@ class NotebookPage extends React.Component {
         });
     }
 
-    modalTextOnChange(e, card_id) {
-        this.setState({modal_text: e.target.value});
-
-        socket.emit('edit', {notebook: this.state.notebook_id, card_id: card_id, text: e.target.value});
+    modalTopicsOnChange(e) {
+        this.setState({modal_current_topics: e.target.value});
     }
 
-    modalOkButtonClick(e, card_id, title, topics) { //topics is an array, possibly comma separated in the input box thing
+    modalTextOnChange(e) {
+        this.setState({modal_current_text: e.target.value});
+
+        if (this.state.modal_is_edit) {
+            socket.emit('edit', {
+                notebook: this.state.notebook_id,
+                card_id: this.state.current_card,
+                text: e.target.value
+            });
+        }
+    }
+
+    modalTitleOnChange(e) {
+        this.setState({modal_current_title: e.target.value});
+
+        if (this.state.modal_is_edit) {
+            socket.emit('updateTitle', {
+                notebook: this.state.notebook_id,
+                card_id: this.state.current_card,
+                title: e.target.value
+            });
+        }
+    }
+
+    modalOkButtonClick(e) {
         let is_edit = this.state.modal_is_edit;
         let content = this.state.modal_current_text;
         if (is_edit) {
-            socket.emit('finishEdit', {notebook: this.state.notebook_id, card_id: card_id});
+            socket.emit('finishEdit', {notebook: this.state.notebook_id, card_id: this.state.current_card});
         } else {
+            let topics = this.state.modal_current_topics.split(',');
+
             let url = "http://collabor8u.herokuapp.com/notebooks/" + this.state.notebook_id + "/cards/new";
-            let object = {session_token: this.state.session_token, title: title, topics: topics};
+            let object = {
+                session_token: this.state.session_token,
+                title: this.state.modal_current_title,
+                topics: topics
+            };
 
             $.ajax({
                 dataType: "json",
@@ -166,20 +197,20 @@ class NotebookPage extends React.Component {
                     this.setState({
                         cards: cards
                     });
-                    
+
                     socket.emit('edit', {notebook: this.state.notebook_id, card_id: card_id, text: content});
                 },
             });
         }
     }
 
-    openModal(e, card_id) {
+    openModal(e) {
         // Check target to determine if its edit or create
         let opp = e.target.attributes.getNamedItem("dataOppType");
         let isEdit = (opp == "edit");
 
         if (isEdit) {
-            socket.emit('beginEdit', {notebook: this.state.notebook_id, card_id: card_id});
+            socket.emit('beginEdit', {notebook: this.state.notebook_id, card_id: this.state.current_card});
         }
 
         this.setState({modal_is_edit: isEdit});
@@ -195,8 +226,15 @@ class NotebookPage extends React.Component {
                         onRequestClose={this.modalOkButtonClick}
                         style={customStyle}
                         contentLabel="Add Project">
-                        <h1>Add Project</h1>
+                        <h1>Notes</h1>
+                        <input placeholder="title"
+                               onChange={this.modalTitleOnChange}
+                        />
                         <input onChange={this.modalTextOnChange}/>
+                        <input placeholder="topics"
+                               onChange={this.modalTopicsOnChange}
+                               disabled={this.state.modal_is_edit}
+                        />
                         <button onClick={this.modalOkButtonClick}>Ok</button>
                     </Modal>
                 </div>
