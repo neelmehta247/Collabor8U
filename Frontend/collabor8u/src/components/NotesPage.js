@@ -116,15 +116,13 @@ class NotesPage extends React.Component {
             this.state.cards.forEach((stateCard) => {
                 if (stateCard._id.toString() == card._id.toString()) {
                     contained = true;
-                    newCards.push(card);
-                } else {
-                    newCards.push(stateCard);
+                    this.state.cards.pop();
+                    this.state.cards.push(card);
                 }
             });
             if (!contained) {
-                newCards.push(card);
+                this.state.cards.push(card);
             }
-            this.setState({cards: newCards});
         });
     }
 
