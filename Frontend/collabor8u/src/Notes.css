@@ -142,3 +142,22 @@
     height: 100%;
     width: 66.66%;
 }
+
+.CartTitle {
+	width: 100%;
+}
+
+.CartTags {
+	width: 100%;
+}
+
+.CartBody {
+	width: 100%;
+}
+
+.wrapper {
+	margin-left:auto;
+    margin-right:auto;
+    height:auto;
+    width:auto;
+}

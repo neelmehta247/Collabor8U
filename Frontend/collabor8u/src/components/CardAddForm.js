@@ -2,10 +2,6 @@ import React from "react";
 import ".././Notes.css";
 
 class CardAddForm extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div>
