@@ -126,11 +126,12 @@ class NotesPage extends React.Component {
         });
     }
 
-    editCallback(card) {
+    editCard(card) {
         this.setState({
-            modal_current_topics: card.topics,
+            modal_current_topics: card.topics.join(','),
             modal_current_text: card.text,
             modal_current_title: card.title,
+            current_card: card._id,
         });
         this.openModal(true);
     }
@@ -317,6 +318,7 @@ class NotesPage extends React.Component {
                 <div className="TopicBody">
                     <CardAddForm createCard={this.createCard.bind(this)} addUser={this.addUser.bind(this)}/>
                     <CardsList
+                        editCard={this.editCard.bind(this)}
                         topics={this.state.topics}
                         cards={this.state.cards}
                     />

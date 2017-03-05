@@ -13,6 +13,7 @@ export default class CardListItem extends React.Component {
             topics: this.props.topics,
             title: this.props.title,
             body: this.props.body,
+            card_id: this.props.key,
         };
     }
 
@@ -20,7 +21,7 @@ export default class CardListItem extends React.Component {
         let all_topics = this.state.all_topics;
         let topic = null;
         all_topics.forEach((_topic) => {
-            if(_topic._id == id) {
+            if (_topic._id == id) {
                 console.log(_topic);
                 topic = _topic;
             }
@@ -29,12 +30,22 @@ export default class CardListItem extends React.Component {
     }
 
     renderTopics() {
-        var topics = []
+        var topics = [];
         this.state.topics.forEach((id) => {
             topics.push(this.getTopic(id));
         });
         return _.map(topics, (topic) =>
             (<button dataKey={topic._id}>{topic.name}</button>));
+    }
+
+    handleEditClick(event) {
+        event.preventDefault();
+        this.props.editCard({
+            topics: this.state.all_topics,
+            text: this.state.text,
+            title: this.state.title,
+            _id: this.state.card_id
+        });
     }
 
     render() {
@@ -45,6 +56,7 @@ export default class CardListItem extends React.Component {
                     <Row className="CartTags">{this.renderTopics()}</Row>
                     <Row className="CartBody">{this.state.body}</Row>
                 </div>
+                <button className="EditBtn" onClick={this.handleEditClick.bind(this)}> Edit</button>
             </Col>
         );
     }

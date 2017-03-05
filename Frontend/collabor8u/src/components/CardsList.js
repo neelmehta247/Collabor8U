@@ -13,7 +13,7 @@ export default class CardsList extends React.Component {
     renderCards() {
         return _.map(this.props.cards, (card) =>
             <CardListItem key={card._id} title={card.title} body={card.text}
-            topics={card.topics} allTopics={this.props.topics}/>);
+            topics={card.topics} allTopics={this.props.topics} editCard={this.props.editCard}/>);
     }
 
     render() {
