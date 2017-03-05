@@ -6,7 +6,10 @@ import "./LoginPage.css";
 import "./App.css";
 import logo from "./logo.svg";
 import "./Projects.css";
+<<<<<<< HEAD
 import Projects from './Projects.js'
+=======
+>>>>>>> a26e07c84b371de1e2a7369f197a1983e71a88b9
 
 
 class LoginPage extends React.Component {
