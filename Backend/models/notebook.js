@@ -3,7 +3,16 @@ var mongoose = require('mongoose');
 var notebookSchema = mongoose.Schema({
     name: String,
     users: [{
-        type: mongoose.Schema.Types.ObjectId, ref: 'User'
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+    cards: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Card'
+    }],
+    topics: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Topic'
     }]
 });
 
