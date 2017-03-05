@@ -82,7 +82,7 @@ class NotesPage extends React.Component {
                 }
             });
             if (!contained) {
-                newCards.push(card);
+                newCards.push(card);  
             }
             this.setState({cards: newCards});
         });
