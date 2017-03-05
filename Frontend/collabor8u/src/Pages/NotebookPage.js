@@ -68,7 +68,6 @@ class NotebookPage extends React.Component {
                         </div>
                     </div>
                 </div>
-            </div>
         );
     }
 }
