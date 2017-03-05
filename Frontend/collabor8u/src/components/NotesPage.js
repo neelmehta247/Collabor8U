@@ -82,7 +82,7 @@ class NotesPage extends React.Component {
                 }
             });
             if (!contained) {
-                newCards.push(card);  
+                newCards.push(card);
             }
             this.setState({cards: newCards});
         });
@@ -261,7 +261,7 @@ class NotesPage extends React.Component {
                 <div className="TopicBody">
                 <CardAddForm createCard={this.createCard.bind(this)} />
                 <CardsList
-                    tags={this.state.topics}
+                    topics={this.state.topics}
                     cards={this.state.cards}
                 />
                 </div>
