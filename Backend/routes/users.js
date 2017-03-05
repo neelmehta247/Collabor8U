@@ -39,7 +39,6 @@ router.get('/me', function (request, result) {
 });
 
 router.post('/login', function (request, result) {
-    console.log(request.body);
     if (request.body.facebook_access_token === undefined) {
         console.error('no token provided');
         return result.status(400).send('no token provided');
