@@ -64,7 +64,6 @@ router.post('/login', function (request, result) {
                         console.error(err);
                         return result.status(500).send('error');
                     }
-                    console.log(session);
                     return result.send(session);
                 });
             }

@@ -24,6 +24,66 @@ router.get('/:id', function (request, result) {
     });
 });
 
+router.post('/:id/add_user', function (request, result) {
+    if (request.body.session_token === undefined) {
+        return result.status(400).send('no session token');
+    }
+
+    Session.findOne({session_token: request.body.session_token})
+        .populate('user').exec(function (err, session) {
+        if (err) {
+            console.error(err);
+            return result.status(500).send('error');
+        }
+
+        if (session == null) {
+            console.error('session doesn\'t exist');
+            return result.status(400).send('session doesn\'t exist');
+        }
+
+        var contained = false;
+        session.user.notebooks.forEach(function (notebook) {
+            if (notebook.toString() == request.params.id) {
+                contained = true;
+            }
+        });
+
+        if (!contained) {
+            console.error('no notebook permissions');
+        } else {
+            if (request.body.email === undefined) {
+                console.error('no email');
+                return result.status(400).send('no email');
+            }
+
+            User.findOne({email: request.body.email}, function (err, user) {
+                if (err) {
+                    console.error(err);
+                    return result.status(500).send('error');
+                }
+
+                if (user == null) {
+                    console.error('no user found');
+                    return result.status(400).send('no user found');
+                }
+
+                Notebook.findOne({_id:request.params.id}, function (err, notebook) {
+                    if (err) {
+                        console.error(err);
+                        return result.status(500).send('error');
+                    }
+
+                    notebook.users.push(user);
+                    notebook.save();
+
+                    user.notebooks.push(notebook);
+                    user.save();
+                });
+            });
+        }
+    });
+});
+
 router.post('/:id/cards/new', function (request, result) {
     if (request.body.session_token === undefined) {
         return result.status(400).send('no session token');
