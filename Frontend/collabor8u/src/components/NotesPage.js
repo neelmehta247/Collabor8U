@@ -32,6 +32,7 @@ class NotesPage extends React.Component {
             modal_current_title: "",
             modal_current_topics: "",
             notebook_id: this.props.params.notebookId,
+            notebook_name: "Notebook",
             topics: [],
             cards: [],
             current_card: {},
@@ -133,7 +134,7 @@ class NotesPage extends React.Component {
         this.setState({
             modal_current_topics: card.topics,
             modal_current_text: card.text,
-            modal_current_title:card.title,
+            modal_current_title: card.title,
         });
         this.openModal(true);
     }
@@ -154,6 +155,7 @@ class NotesPage extends React.Component {
             success: (data) => {
                 console.log(data);
                 this.setState({
+                    notebook_name: data.name,
                     cards: data.cards,
                     topics: data.topics,
                 });
@@ -278,7 +280,7 @@ class NotesPage extends React.Component {
                 console.log("status: " + e.status);
             },
             success: (data) => {
-                
+
             },
         });
     }
@@ -316,7 +318,7 @@ class NotesPage extends React.Component {
                            onChange={this.userEmailOnChange}/>
                     <button onClick={this.addUserClick}>Ok</button>
                 </Modal>
-                <div className="TopicHeader">Topics</div>
+                <div className="TopicHeader">{this.state.notebook_name}</div>
                 <div className="TopicBody">
                     <CardAddForm createCard={this.createCard.bind(this)} addUser={this.addUser.bind(this)}/>
                     <CardsList
