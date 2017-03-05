@@ -6,13 +6,14 @@ import TopicListItem from "./TopicListItem";
 
 export default class CardsList extends React.Component {
     renderTopics() {
+        console.log(this.props.topics);
         return _.map(this.props.topics, (topic) =>
-            <TopicListItem key={topic._id} title={topic.name}/>);
+            <TopicListItem dataKey={topic._id} title={topic.name}/>);
     }
 
     renderCards() {
         return _.map(this.props.cards, (card) =>
-            <CardListItem key={card._id} title={card.title} body={card.text}
+            <CardListItem dataKay={card._id} title={card.title} body={card.text}
             topics={card.topics} allTopics={this.props.topics} editCard={this.props.editCard}/>);
     }
 

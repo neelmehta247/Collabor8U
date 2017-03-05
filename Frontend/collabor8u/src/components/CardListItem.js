@@ -15,6 +15,7 @@ export default class CardListItem extends React.Component {
             body: this.props.body,
             card_id: this.props.key,
         };
+        console.log(this.state.card_id);
     }
 
     getTopic(id) {
@@ -22,7 +23,6 @@ export default class CardListItem extends React.Component {
         let topic = null;
         all_topics.forEach((_topic) => {
             if (_topic._id == id) {
-                console.log(_topic);
                 topic = _topic;
             }
         });
