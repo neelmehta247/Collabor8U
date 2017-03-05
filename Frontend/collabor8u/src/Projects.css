@@ -19,11 +19,12 @@
 
 .MainTable {
     background-color: white;
-    height: 100%;
+    height: 85%;
+    overflow: scroll;
 }
 
 .Header {
-    height: 10%;
+    height: 15%;
     background-color: black;
     display: block;
     color: white;
@@ -36,18 +37,34 @@
 
 .addBtn {
     height: 100%;
-    width: 100px;
+    width: 10%;
     float: left;
     border-style: dashed;
     border-color: grey;
     border-width: 2.5px;
-    background-color: #dbdbdb;
+    background-color: white;
 
 }
 
+.MulBtn {
+	margin-left: 10%;
+	height: 100%;
+}
+
 .NewProject {
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 25%;
+    width: 15%;
+    font-family: 'Raleway';
+    background-color: black;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 15px;
+
 }
 
 .PlusImg {
@@ -55,3 +72,15 @@
     width: 50px;
     opacity: 0.7;
 }
+
+
+.ChildBtn {
+	margin-left: 10%;
+	height: 85%;
+	padding-top: 5%;	
+}
+
+
+
+
+

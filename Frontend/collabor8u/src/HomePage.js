@@ -2,7 +2,7 @@ import React from "react";
 import cookie from "react-cookie";
 import $ from "jquery";
 
-class Home extends React.Component {
+class HomePage extends React.Component {
     constructor(props) {
         super(props);
         let url = "https://collabor8u.herokuapp.com/users/login";
@@ -34,4 +34,4 @@ class Home extends React.Component {
     }
 }
 
-export default Home;
+export default HomePage;

@@ -6,7 +6,7 @@ import plus from "./img/plus.png";
 class Projects extends React.Component {
     render() {
         return <button className="NewProject" /* onClick={activateLasers} */ >
-            Activate Lasers
+            Project
         </button>;
     }
 }
@@ -34,7 +34,10 @@ class Form extends React.Component {
                         <button className="addBtn" onClick={this.onAddBtnClick}>
                             <img src={plus} className="PlusImg" alt="plus"/>
                         </button>
-                        {this.state.inputList}
+
+                        <div className="ChildBtn">
+                            {this.state.inputList}
+                        </div>
                     </div>
                 </div>
             </div>
