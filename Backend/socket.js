@@ -5,6 +5,7 @@ var socket = function (server) {
 
     io.on('connection', function (socket) {
         socket.on('join', function (req) {
+            console.log('joined room ' + req.notebook);
             socket.join(req.notebook);
         });
 
@@ -18,6 +19,8 @@ var socket = function (server) {
                     if (card != null) {
                         card.is_being_edited = true;
                         card.save();
+
+                        io.sockets.in(req.notebook).emit('beginEdit', card);
                     }
                 }
             });
@@ -29,6 +32,8 @@ var socket = function (server) {
                     if (card != null) {
                         card.is_being_edited = false;
                         card.save();
+
+                        io.sockets.in(req.notebook).emit('finishEdit', card);
                     }
                 }
             });
@@ -49,14 +54,14 @@ var socket = function (server) {
 
         socket.on('updateTitle', function (req) {
             Card.findOne({_id: req.card_id}, function (err, card) {
-               if (!error) {
-                   if (card != null) {
-                       card.title = req.title;
-                       card.save();
+                if (!error) {
+                    if (card != null) {
+                        card.title = req.title;
+                        card.save();
 
-                       io.sockets.in(req.notebook).emit('updateTitle', card);
-                   }
-               }
+                        io.sockets.in(req.notebook).emit('updateTitle', card);
+                    }
+                }
             });
         });
     });
