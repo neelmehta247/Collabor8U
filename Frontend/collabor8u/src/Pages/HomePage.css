@@ -25,7 +25,6 @@
 .Header {
     height: 15%;
     background-color: black;
-    display: block;
     color: white;
     display: flex;
     align-items: center;
@@ -42,15 +41,12 @@
 }
 
 .MulBtn {
-	margin-left: 10%;
-	height: 100%;
+    margin-left: 10%;
+    height: 100%;
 }
 
 .NewProject {
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin: 10px;
     height: 25%;
     width: 15%;
     font-family: 'Raleway';
@@ -67,9 +63,8 @@
     opacity: 0.7;
 }
 
-
 .ChildBtn {
-	margin-left: 10%;
-	height: 85%;
-	padding-top: 5%;
+    margin-left: 10%;
+    height: 85%;
+    padding-top: 5%;
 }
