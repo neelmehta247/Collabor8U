@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import LoginPage from "./LoginPage";
 import HomePage from "./HomePage";
 import Projects from "./Projects";
+import NotebookPage from "./NotebookPage";
 import "./index.css";
 import {Router, Route, browserHistory} from "react-router";
 
