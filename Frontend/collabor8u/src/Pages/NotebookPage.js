@@ -140,13 +140,36 @@ class NotebookPage extends React.Component {
         socket.emit('edit', {notebook: this.state.notebook_id, card_id: card_id, text: e.target.value});
     }
 
-    modalOkButtonClick(e, card_id) {
+    modalOkButtonClick(e, card_id, title, topics) { //topics is an array, possibly comma separated in the input box thing
         let is_edit = this.state.modal_is_edit;
         let content = this.state.modal_current_text;
         if (is_edit) {
             socket.emit('finishEdit', {notebook: this.state.notebook_id, card_id: card_id});
         } else {
-            // POST cards/create
+            let url = "http://collabor8u.herokuapp.com/notebooks/" + this.state.notebook_id + "/cards/new";
+            let object = {session_token: this.state.session_token, title: title, topics: topics};
+
+            $.ajax({
+                dataType: "json",
+                crossDomain: true,
+                contentType: 'application/json',
+                method: 'POST',
+                data: JSON.stringify(object),
+                url: url,
+                error: (e) => {
+                    console.log(e);
+                    console.log("status: " + e.status);
+                },
+                success: (data) => {
+                    let cards = this.state.cards;
+                    cards.push(data);
+                    this.setState({
+                        cards: cards
+                    });
+                    
+                    socket.emit('edit', {notebook: this.state.notebook_id, card_id: card_id, text: content});
+                },
+            });
         }
     }
 
