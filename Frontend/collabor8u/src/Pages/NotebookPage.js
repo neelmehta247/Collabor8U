@@ -1,10 +1,10 @@
 import React from "react";
 
 class NotebookPage extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            notebook_id: this.props.params.repoName,
+            notebook_id: this.props.params.notebookId,
         };
     }
 
