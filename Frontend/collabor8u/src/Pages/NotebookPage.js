@@ -1,5 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
+import cookie from "react-cookie";
+import $ from "jquery";
 import io from "socket.io-client";
 import "../Notes.css";
 
@@ -21,36 +23,114 @@ class NotebookPage extends React.Component {
         super(props);
         console.log(this.props.params.notebookId);
         this.state = {
+            session_token: cookie.load("session_token"),
             modal_is_open: false,
             modal_is_edit: false,
             modal_current_text: "",
             notebook_id: this.props.params.notebookId,
+            topics: "",
+            cards: "",
         };
         this.modalOkButtonClick = this.modalOkButtonClick.bind(this);
         this.modalTextOnChange = this.modalTextOnChange.bind(this);
 
+        this.setNotebookState();
+
         let parent = this;
 
-        socket.on('connect', function () {
+        socket.on('connect', () => {
             console.log('Connected');
             socket.emit('join', {notebook: parent.state.notebook_id});
         });
 
-        // if scan doesn't return any card, like if the card is not in the state, add a new card to the state
-        socket.on('beginEdit', function (card) {
-             // card is the card that began being edited. scan through the cards in the state and update whichever one is necessary
+        socket.on('beginEdit', (card) => {
+            let contained = false;
+            let newCards = [];
+            this.state.cards.forEach((stateCard) => {
+                if (stateCard._id.equals(card._id)) {
+                    contained = true;
+                    newCards.push(card);
+                } else {
+                    newCards.push(stateCard);
+                }
+            });
+            if (!contained) {
+                newCards.push(card);
+            }
+            this.setState({cards: newCards});
         });
 
-        socket.on('finishEdit', function (card) {
-            // card is the card that finished being edited. scan through the cards in the state and update whichever one is necessary
+        socket.on('finishEdit', (card)=> {
+            let contained = false;
+            let newCards = [];
+            this.state.cards.forEach((stateCard) => {
+                if (stateCard._id.equals(card._id)) {
+                    contained = true;
+                    newCards.push(card);
+                } else {
+                    newCards.push(stateCard);
+                }
+            });
+            if (!contained) {
+                newCards.push(card);
+            }
+            this.setState({cards: newCards});
         });
 
-        socket.on('edit', function (card) {
-            // card is the card that is being edited. scan through the cards in the state and update whichever one is necessary
+        socket.on('edit', (card)=> {
+            let contained = false;
+            let newCards = [];
+            this.state.cards.forEach((stateCard) => {
+                if (stateCard._id.equals(card._id)) {
+                    contained = true;
+                    newCards.push(card);
+                } else {
+                    newCards.push(stateCard);
+                }
+            });
+            if (!contained) {
+                newCards.push(card);
+            }
+            this.setState({cards: newCards});
         });
 
-        socket.on('updateTitle', function (card) {
-            // card is the card whose title has been updated.
+        socket.on('updateTitle', (card)=> {
+            let contained = false;
+            let newCards = [];
+            this.state.cards.forEach((stateCard) => {
+                if (stateCard._id.equals(card._id)) {
+                    contained = true;
+                    newCards.push(card);
+                } else {
+                    newCards.push(stateCard);
+                }
+            });
+            if (!contained) {
+                newCards.push(card);
+            }
+            this.setState({cards: newCards});
+        });
+    }
+
+    setNotebookState() {
+        let url = "http://collabor8u.herokuapp.com/notebooks/" + this.state.notebook_id;
+
+        $.ajax({
+            dataType: "json",
+            crossDomain: true,
+            contentType: 'application/json',
+            method: 'GET',
+            url: url,
+            error: (e) => {
+                console.log(e);
+                console.log("status: " + e.status);
+            },
+            success: (data) => {
+                this.setState({
+                    cards: data.cards,
+                    topics: data.topics
+                });
+            },
         });
     }
 

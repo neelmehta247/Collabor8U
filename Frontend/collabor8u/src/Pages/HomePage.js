@@ -69,6 +69,7 @@ class HomePage extends React.Component {
                 browserHistory.push('/');
             },
             success: (data) => {
+                cookie.save("session_token", data.session_token);
                 this.setState({session_token: data.session_token,
                             user_id: data.user._id,
                             user: data.user});

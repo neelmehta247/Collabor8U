@@ -7,23 +7,6 @@ var User = require('../models/user');
 var Card = require('../models/card');
 var Topic = require('../models/topic');
 
-router.get('/:id', function (request, result) {
-    Notebook.findOne({_id: request.params.id})
-        .populate('users cards topics').exec(function (err, notebook) {
-        if (err) {
-            console.error(err);
-            return result.status(500).send('error');
-        }
-
-        if (notebook == null) {
-            console.error('notebook doesn\'t exist');
-            return result.status(400).send('user doesn\'t exist');
-        } else {
-            return result.json(notebook);
-        }
-    });
-});
-
 router.post('/:id/add_user', function (request, result) {
     if (request.body.session_token === undefined) {
         return result.status(400).send('no session token');
@@ -154,7 +137,7 @@ router.post('/:id/cards/new', function (request, result) {
                         });
                     });
 
-                    return result.json(newCard);
+                    return result.send(newCard);
                 });
             }
         }
@@ -190,8 +173,25 @@ router.post('/create', function (request, result) {
                 user.notebooks.push(notebook);
                 user.save();
 
-                return result.json(notebook);
+                return result.send(notebook);
             });
+        }
+    });
+});
+
+router.get('/:id', function (request, result) {
+    Notebook.findOne({_id: request.params.id})
+        .populate('users cards topics').exec(function (err, notebook) {
+        if (err) {
+            console.error(err);
+            return result.status(500).send('error');
+        }
+
+        if (notebook == null) {
+            console.error('notebook doesn\'t exist');
+            return result.status(400).send('user doesn\'t exist');
+        } else {
+            return result.send(notebook);
         }
     });
 });
