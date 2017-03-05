@@ -1,14 +1,12 @@
-import React from 'react';
-import ReactDOM from "react-dom";
-import './Projects.css';
-
+import React from "react";
+import "./Projects.css";
 
 
 class Projects extends React.Component {
     render() {
-    return <button className="NewProject" /* onClick={activateLasers} */ >
-                Activate Lasers
-            </button>;
+        return <button className="NewProject" /* onClick={activateLasers} */ >
+            Activate Lasers
+        </button>;
     }
 }
 
@@ -22,7 +20,7 @@ class Form extends React.Component {
     onAddBtnClick(event) {
         const inputList = this.state.inputList;
         this.setState({
-            inputList: inputList.concat(<Projects key={inputList.length} />)
+            inputList: inputList.concat(<Projects key={inputList.length}/>)
         });
     }
 
@@ -35,8 +33,6 @@ class Form extends React.Component {
         );
     }
 }
-
-
 
 
 export default Form;
