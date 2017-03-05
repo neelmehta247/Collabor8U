@@ -18,31 +18,33 @@ export default class CardListItem extends React.Component {
 
     getTopic(id) {
         let all_topics = this.state.all_topics;
-        all_topics.forEach((topic) => {
-            if(topic._id[0] == id[0]) {
-                return topic;
+        let topic = null;
+        all_topics.forEach((_topic) => {
+            if(_topic._id == id) {
+                console.log(_topic);
+                topic = _topic;
             }
         });
+        return topic;
     }
 
     renderTopics() {
-        let topics = []
+        var topics = []
         this.state.topics.forEach((id) => {
-            topics.push(getTopic(id));
-        })
-        console.log(this.state.topics);
-        return _.map(this.state.topics, (topic) =>
-            (<button dataKey={topic._id}>{topic.title}</button>));
+            topics.push(this.getTopic(id));
+        });
+        return _.map(topics, (topic) =>
+            (<button dataKey={topic._id}>{topic.name}</button>));
     }
 
     render() {
         return (
             <Col md={3} className="CardLst">
-            <div className="wrapper">
-                <Row className="CartTitle">{this.state.title}</Row>
-                <Row className="CartTags">{this.renderTopics()}</Row>
-                <Row className="CartBody">{this.state.body}</Row>
-            </div>
+                <div className="wrapper">
+                    <Row className="CartTitle">{this.state.title}</Row>
+                    <Row className="CartTags">{this.renderTopics()}</Row>
+                    <Row className="CartBody">{this.state.body}</Row>
+                </div>
             </Col>
         );
     }

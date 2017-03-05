@@ -23,7 +23,6 @@ const customStyle = {
 class NotesPage extends React.Component {
     constructor(props) {
         super(props);
-        console.log(this.props.params.notebookId);
         this.state = {
             session_token: cookie.load("session_token"),
             modal_is_open: false,
@@ -98,15 +97,12 @@ class NotesPage extends React.Component {
                 if (stateCard._id.toString() == card._id.toString()) {
                     contained = true;
                     newCards.push(card);
-                    console.log(newCards);
                 } else {
                     newCards.push(stateCard);
-                    console.log(newCards);
                 }
             });
             if (!contained) {
                 newCards.push(card);
-                console.log(newCards);
             }
             this.setState({cards: newCards});
         });
@@ -152,7 +148,6 @@ class NotesPage extends React.Component {
                 console.log("status: " + e.status);
             },
             success: (data) => {
-                console.log(data);
                 this.setState({
                     cards: data.cards,
                     topics: data.topics,
@@ -278,7 +273,7 @@ class NotesPage extends React.Component {
                 console.log("status: " + e.status);
             },
             success: (data) => {
-                
+
             },
         });
     }
