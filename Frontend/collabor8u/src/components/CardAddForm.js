@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import '.././Notes.css'
 
-export default class TodosList extends React.Component {
+export default class CardAddForm extends React.Component {
     constructor(props) {
         super(props);
 
@@ -13,21 +13,19 @@ export default class TodosList extends React.Component {
 
     renderError() {
         if (!this.state.error) { return null; }
-
         return <div style={{ color: 'red' }}>{this.state.error}</div>;
     }
 
     render() {
         return (
-            
                 <form className="FormInput" onSubmit={this.handleCreate.bind(this)}>
                 <div className="FormWrapper">
-                    <input className="InputStyle" type="text" placeholder="What do I need to do?" ref="createInput" />
-                    <button className="AddTask">Create</button>
+                    <input className="InputStyle" type="text" placeholder="Enter topics" ref="createInput" />
+                    <button className="AddCard">Add Card</button>
                 </div>
                     {this.renderError()}
                 </form>
-            
+
         );
     }
 
@@ -35,8 +33,8 @@ export default class TodosList extends React.Component {
         event.preventDefault();
 
         const createInput = this.refs.createInput;
-        const task = createInput.value;
-        const validateInput = this.validateInput(task);
+        const tag = createInput.value;
+        const validateInput = this.validateInput(tag);
 
         if (validateInput) {
             this.setState({ error: validateInput });
@@ -44,15 +42,13 @@ export default class TodosList extends React.Component {
         }
 
         this.setState({ error: null });
-        this.props.createTask(task);
+        this.props.createCard(tag);
         this.refs.createInput.value = '';
     }
 
-    validateInput(task) {
-        if (!task) {
-            return 'Please enter a task.';
-        } else if (find(this.props.todos, todo => todo.task === task)) {
-            return 'Task already exists.';
+    validateInput(tag) {
+        if (!tag) {
+            return 'Please enter a tag.';
         } else {
             return null;
         }

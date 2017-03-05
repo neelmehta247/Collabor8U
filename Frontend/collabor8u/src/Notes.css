@@ -20,7 +20,7 @@
 	border: solid black 2px;
 	border-radius: 10px;
 	margin-top: 10px;
-	width: 18%;
+	width: 100%%;
 	margin-left: 20px;
 }
 
@@ -64,7 +64,7 @@
 	text-align: center;
 }
 
-.ActionCol {
+.CardCol {
 	height: 100%;
 	width: 75%;
 	text-align: center;
@@ -80,7 +80,7 @@
 
 
 
-.AddTask {
+.AddCard {
 	border: none;
 	background-color: black;
 	color: white;
@@ -111,6 +111,14 @@
 	font-family: 'Raleway';
 }
 
+.LeftPanel {
+	float: left;
+	height: 100%;
+	width: 33.33%;
+}
 
-
-
+.RightPanel {
+	float: left;
+	height: 100%;
+	width: 63%;
+}
