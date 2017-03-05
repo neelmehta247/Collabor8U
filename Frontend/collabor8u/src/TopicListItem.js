@@ -1,7 +1,7 @@
 import React from 'react';
 import '.././Notes.css'
 
-export default class CardListItem extends React.Component {
+export default class TopicListItem extends React.Component {
     constructor(props) {
         super(props);
 
@@ -12,7 +12,7 @@ export default class CardListItem extends React.Component {
 
     render() {
         return (
-            <div className="CardLst">
+            <div className="TopicLst">
             </div>
         );
     }
