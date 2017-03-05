@@ -5,9 +5,7 @@ import cookie from "react-cookie";
 import "./LoginPage.css";
 import "./App.css";
 import logo from "./logo.svg";
-
-import Projects from './Projects.js'
-import './Projects.css'
+import "./Projects.css";
 
 
 class LoginPage extends React.Component {
