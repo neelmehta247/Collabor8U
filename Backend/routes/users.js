@@ -33,7 +33,7 @@ router.get('/me', function (request, result) {
                 return result.status(500).send('error');
             }
 
-            return result.json(session);
+            return result.send(session);
         });
     }
 });
@@ -53,14 +53,20 @@ router.post('/login', function (request, result) {
 
         if (session != null) {
             if (session.active) {
-                return result.json(session);
+                return result.send(session);
             } else {
-                var newSession = createNewSession(session.user, request.body.facebook_access_token);
-                if (newSession == 'error') {
-                    return result.status(500).send('error');
-                } else {
-                    return result.json(newSession);
-                }
+                var newSession = new Session({
+                    user: session.user,
+                    facebook_access_token: request.body.facebook_access_token
+                });
+                newSession.save(function (err, session) {
+                    if (err) {
+                        console.error(err);
+                        return result.status(500).send('error');
+                    }
+                    console.log(session);
+                    return result.send(session);
+                });
             }
         } else {
             graph.get('me', {access_token: request.body.facebook_access_token}, function (err, res) {
@@ -85,12 +91,18 @@ router.post('/login', function (request, result) {
                         }
 
                         if (user != null) {
-                            var session = createNewSession(user, request.body.facebook_access_token);
-                            if (session == 'error') {
-                                return result.status(500).send('error');
-                            } else {
-                                return result.json(session);
-                            }
+                            var newSession = new Session({
+                                user: user,
+                                facebook_access_token: request.body.facebook_access_token
+                            });
+                            newSession.save(function (err, session) {
+                                if (err) {
+                                    console.error(err);
+                                    return result.status(500).send('error');
+                                }
+                                console.log(session);
+                                return result.send(session);
+                            });
                         } else {
                             var newUser = new User({
                                 name: res.name,
@@ -102,12 +114,18 @@ router.post('/login', function (request, result) {
                                     return result.status(500).send('error');
                                 }
 
-                                var session = createNewSession(newUser, request.body.facebook_access_token);
-                                if (session == 'error') {
-                                    return result.status(500).send('error');
-                                } else {
-                                    return result.json(session);
-                                }
+                                var newSession = new Session({
+                                    user: newUser,
+                                    facebook_access_token: request.body.facebook_access_token
+                                });
+                                newSession.save(function (err, session) {
+                                    if (err) {
+                                        console.error(err);
+                                        return result.status(500).send('error');
+                                    }
+                                    console.log(session);
+                                    return result.send(session);
+                                });
                             });
                         }
                     });
@@ -128,24 +146,9 @@ router.get('/:id', function (request, result) {
             console.error('user doesn\'t exist');
             return result.status(400).send('user doesn\'t exist');
         } else {
-            return result.json(user);
+            return result.send(user);
         }
     });
 });
-
-function createNewSession(user, access_token) {
-    var session = new Session({
-        user: user,
-        facebook_access_token: access_token
-    });
-    session.save(function (err, session) {
-        if (err) {
-            console.error(err);
-            return 'error';
-        }
-
-        return session;
-    });
-}
 
 module.exports = router;
