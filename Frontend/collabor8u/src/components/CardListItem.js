@@ -13,7 +13,7 @@ export default class CardListItem extends React.Component {
             topics: this.props.topics,
             title: this.props.title,
             body: this.props.body,
-            card_id: this.props.key,
+            card_id: this.props.dataKay,
         };
         console.log(this.state.card_id);
     }
@@ -42,7 +42,7 @@ export default class CardListItem extends React.Component {
         event.preventDefault();
         this.props.editCard({
             topics: this.state.all_topics,
-            text: this.state.text,
+            text: this.state.body,
             title: this.state.title,
             _id: this.state.card_id
         });

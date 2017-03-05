@@ -6,7 +6,6 @@ import TopicListItem from "./TopicListItem";
 
 export default class CardsList extends React.Component {
     renderTopics() {
-        console.log(this.props.topics);
         return _.map(this.props.topics, (topic) =>
             <TopicListItem dataKey={topic._id} title={topic.name}/>);
     }
