@@ -57,7 +57,7 @@ class NotesPage extends React.Component {
             let contained = false;
             let newCards = [];
             this.state.cards.forEach((stateCard) => {
-                if (stateCard._id.equals(card._id)) {
+                if (stateCard._id.toString() == card._id.toString()) {
                     contained = true;
                     newCards.push(card);
                 } else {
@@ -74,7 +74,7 @@ class NotesPage extends React.Component {
             let contained = false;
             let newCards = [];
             this.state.cards.forEach((stateCard) => {
-                if (stateCard._id.equals(card._id)) {
+                if (stateCard._id.toString() == card._id.toString()) {
                     contained = true;
                     newCards.push(card);
                 } else {
@@ -94,12 +94,15 @@ class NotesPage extends React.Component {
                 if (stateCard._id.toString() == card._id.toString()) {
                     contained = true;
                     newCards.push(card);
+                        console.log(newCards);
                 } else {
                     newCards.push(stateCard);
+                        console.log(newCards);
                 }
             });
             if (!contained) {
                 newCards.push(card);
+                    console.log(newCards);
             }
             this.setState({cards: newCards});
         });
@@ -108,7 +111,7 @@ class NotesPage extends React.Component {
             let contained = false;
             let newCards = [];
             this.state.cards.forEach((stateCard) => {
-                if (stateCard._id.equals(card._id)) {
+                if (stateCard._id.toString() == card._id.toString()) {
                     contained = true;
                     newCards.push(card);
                 } else {
@@ -136,11 +139,11 @@ class NotesPage extends React.Component {
                 console.log("status: " + e.status);
             },
             success: (data) => {
+                console.log(data);
                 this.setState({
                     cards: data.cards,
                     topics: data.topics,
                 });
-                this.forceUpdate();
             },
         });
     }
@@ -191,7 +194,7 @@ class NotesPage extends React.Component {
                     title: this.state.modal_current_title,
                     topics: topics
                 };
-
+                let parent = this;
                 $.ajax({
                     dataType: "json",
                     crossDomain: true,
@@ -204,15 +207,10 @@ class NotesPage extends React.Component {
                         console.log("status: " + e.status);
                     },
                     success: (data) => {
-                        let cards = this.state.cards;
-                        cards.push(data);
-                        this.setState({
-                            cards: cards
-                        });
-
                         this.setState({modal_is_open: false});
-
                         this.socket.emit('edit', {notebook: this.state.notebook_id, card_id: data._id, text: content});
+                        this.forceUpdate()
+                        parent.setNotebookState();
                     },
                 });
             }
