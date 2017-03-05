@@ -40,8 +40,12 @@ export default class CardListItem extends React.Component {
 
     handleEditClick(event) {
         event.preventDefault();
+        var topics = [];
+        this.state.topics.forEach((id) => {
+            topics.push(this.getTopic(id));
+        });
         this.props.editCard({
-            topics: this.state.all_topics,
+            topics: topics,
             text: this.state.body,
             title: this.state.title,
             _id: this.state.card_id
