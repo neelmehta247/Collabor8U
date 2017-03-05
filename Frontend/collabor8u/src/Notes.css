@@ -15,14 +15,14 @@
 .TopicLst {
 	background-color: white;
 	font-family: 'Raleway';
-	height: 50px;
-	float: right;
+	height: 20px;
 	padding: 20px;
 	border: solid black 2px;
 	border-radius: 10px;
 	margin-top: 10px;
-	width: 25%;
-
+	margin-right: 20px;
+	margin-left: 20px;
+	color: black;
 }
 
 
@@ -39,6 +39,7 @@
 	text-align: center;
 	justify-content: center;
 	display: flex;
+	color: black;
 }
 
 
@@ -96,7 +97,7 @@
 
 
 .AddUser {
-	background-color: 
+	background-color:
 }
 
 

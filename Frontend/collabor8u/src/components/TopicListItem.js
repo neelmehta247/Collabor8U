@@ -13,6 +13,7 @@ export default class TopicListItem extends React.Component {
     render() {
         return (
             <div className="TopicLst">
+            {this.props.title}
             </div>
         );
     }
