@@ -30,9 +30,9 @@ class Notebook extends React.Component {
         browserHistory.push('/notebook/' + key);
     }
 
-    render(props) {
+    render() {
         return (
-            <button className="NewNotebook" dataKey={this.props.key} onClick={this.notebookOnClick}>
+            <button className="NewNotebook" onClick={this.notebookOnClick}>
                 {this.props.title}
             </button>
         );

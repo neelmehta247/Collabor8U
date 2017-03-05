@@ -25,6 +25,7 @@
 .Header {
     height: 15%;
     background-color: black;
+    display: block;
     color: white;
     display: flex;
     align-items: center;
@@ -45,8 +46,11 @@
     height: 100%;
 }
 
-.NewProject {
-    margin: 10px;
+.NewNotebook {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     height: 25%;
     width: 15%;
     font-family: 'Raleway';
@@ -62,6 +66,7 @@
     width: 50px;
     opacity: 0.7;
 }
+
 
 .ChildBtn {
     margin-left: 10%;
