@@ -26,20 +26,14 @@ router.get('/me', function (request, result) {
         console.error('no query');
         return result.status(400).send('no query');
     } else {
-        Session.findOne({session_token: request.query.session_token}, function (err, session) {
+        Session.findOne({session_token: request.query.session_token})
+            .populate('user').exec(function (err, session) {
             if (err) {
                 console.error(err);
                 return result.status(500).send('error');
             }
 
-            session.populate('user').exec(function (err, session) {
-                if (err) {
-                    console.error(err);
-                    return result.status(500).send('error');
-                }
-
-                return result.json(session);
-            });
+            return result.json(session);
         });
     }
 });
@@ -51,30 +45,24 @@ router.post('/login', function (request, result) {
         return result.status(400).send('no token provided');
     }
 
-    Session.findOne({facebook_access_token: request.body.access_token}, function (err, session) {
+    Session.findOne({facebook_access_token: request.body.access_token})
+        .populate('user').exec(function (err, session) {
         if (err) {
             console.error(err);
             return result.status(500).send('error');
         }
 
         if (session != null) {
-            session.populate('user').exec(function (err, session) {
-                if (err) {
-                    console.error(err);
+            if (session.active) {
+                return result.json(session);
+            } else {
+                var newSession = createNewSession(session.user, request.body.facebook_access_token);
+                if (newSession == 'error') {
                     return result.status(500).send('error');
-                }
-
-                if (session.active) {
-                    return result.json(session);
                 } else {
-                    var newSession = createNewSession(session.user, request.body.facebook_access_token);
-                    if (newSession == 'error') {
-                        return result.status(500).send('error');
-                    } else {
-                        return result.json(newSession);
-                    }
+                    return result.json(newSession);
                 }
-            });
+            }
         } else {
             graph.get('me', {access_token: request.body.facebook_access_token}, function (err, res) {
                 if (err) {
