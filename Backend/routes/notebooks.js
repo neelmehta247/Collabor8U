@@ -108,7 +108,8 @@ router.post('/:id/cards/new', function (request, result) {
                     newCard.save();
 
                     notebook.cards.push(newCard);
-                    notebook.save();
+
+                    var count = request.body.topics.length;
 
                     request.body.topics.forEach(function (topic) {
                         Topic.findOne({name: topic, notebook: notebook._id}, function (err, badTopic) {
@@ -123,16 +124,19 @@ router.post('/:id/cards/new', function (request, result) {
                                 newTopic.save();
 
                                 notebook.topics.push(newTopic);
-                                notebook.save();
-
                                 newCard.topics.push(newTopic);
-                                newCard.save();
                             } else {
                                 badTopic.cards.push(newCard);
                                 badTopic.save();
 
                                 newCard.topics.push(badTopic);
+                            }
+
+                            if (count <= 1) {
                                 newCard.save();
+                                notebook.save();
+                            } else {
+                                count--;
                             }
                         });
                     });
