@@ -80,13 +80,12 @@ class NotesPage extends React.Component {
             this.state.cards.forEach((stateCard) => {
                 if (stateCard._id.toString() == card._id.toString()) {
                     contained = true;
-                    newCards.push(card);
-                } else {
-                    newCards.push(stateCard);
+                    this.state.cards.pop();
+                    this.state.cards.push(card);
                 }
             });
             if (!contained) {
-                newCards.push(card);
+                this.state.cards.push(card);
             }
             this.setState({cards: newCards});
         });
@@ -94,6 +93,7 @@ class NotesPage extends React.Component {
         this.socket.on('edit', (card)=> {
             let contained = false;
             let newCards = [];
+            console.log(this.state.cards);
             this.state.cards.forEach((stateCard) => {
                 if (stateCard._id.toString() == card._id.toString()) {
                     contained = true;
@@ -106,6 +106,8 @@ class NotesPage extends React.Component {
                 newCards.push(card);
             }
             this.setState({cards: newCards});
+            console.log(this.state.cards);
+            this.setNotebookState();
         });
 
         this.socket.on('updateTitle', (card)=> {
@@ -127,6 +129,7 @@ class NotesPage extends React.Component {
     }
 
     editCard(card) {
+        console.log(card);
         this.setState({
             modal_current_topics: card.topics.map((topic) => topic.name).join(','),
             modal_current_text: card.text,
@@ -197,6 +200,8 @@ class NotesPage extends React.Component {
             let content = this.state.modal_current_text;
             if (is_edit) {
                 this.socket.emit('finishEdit', {notebook: this.state.notebook_id, card_id: this.state.current_card});
+                this.forceUpdate();
+                this.setNotebookState();
             } else {
                 let topics = this.state.modal_current_topics.split(',');
 
