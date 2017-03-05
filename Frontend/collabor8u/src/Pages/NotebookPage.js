@@ -198,7 +198,7 @@ class NotebookPage extends React.Component {
                         cards: cards
                     });
 
-                    socket.emit('edit', {notebook: this.state.notebook_id, card_id: card_id, text: content});
+                    socket.emit('edit', {notebook: this.state.notebook_id, card_id: data._id, text: content});
                 },
             });
         }
