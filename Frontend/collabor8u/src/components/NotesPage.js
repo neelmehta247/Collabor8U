@@ -3,59 +3,260 @@
 import React from 'react';
 import CardAddForm from './CardAddForm';
 import CardsList from './CardsList';
-import '.././Notes.css'
+import Modal from "react-modal";
+import cookie from "react-cookie";
+import $ from "jquery";
+import io from "socket.io-client";
+import "../Notes.css";
 
+const socket = io('http://collabor8u.herokuapp.com');
+
+const customStyle = {
+    content: {
+        top: '50%',
+        left: '50%',
+        right: 'auto',
+        bottom: 'auto',
+        marginRight: '-50%',
+        transform: 'translate(-50%, -50%)'
+    }
+};
 
 class NotesPage extends React.Component {
     constructor(props) {
         super(props);
-
+        console.log(this.props.params.notebookId);
         this.state = {
+            session_token: cookie.load("session_token"),
+            modal_is_open: false,
+            modal_is_edit: false,
+            modal_current_text: "",
+            modal_current_title: "",
+            modal_current_topics: "",
+            notebook_id: this.props.params.notebookId,
             topics: [],
             cards: [],
+            current_card: {},
         };
+        this.modalOkButtonClick = this.modalOkButtonClick.bind(this);
+        this.modalTextOnChange = this.modalTextOnChange.bind(this);
+
+        this.setNotebookState();
+
+        let parent = this;
+
+        socket.on('connect', () => {
+            console.log('Connected');
+            socket.emit('join', {notebook: parent.state.notebook_id});
+        });
+
+        socket.on('beginEdit', (card) => {
+            let contained = false;
+            let newCards = [];
+            this.state.cards.forEach((stateCard) => {
+                if (stateCard._id.equals(card._id)) {
+                    contained = true;
+                    newCards.push(card);
+                } else {
+                    newCards.push(stateCard);
+                }
+            });
+            if (!contained) {
+                newCards.push(card);
+            }
+            this.setState({cards: newCards});
+        });
+
+        socket.on('finishEdit', (card)=> {
+            let contained = false;
+            let newCards = [];
+            this.state.cards.forEach((stateCard) => {
+                if (stateCard._id.equals(card._id)) {
+                    contained = true;
+                    newCards.push(card);
+                } else {
+                    newCards.push(stateCard);
+                }
+            });
+            if (!contained) {
+                newCards.push(card);
+            }
+            this.setState({cards: newCards});
+        });
+
+        socket.on('edit', (card)=> {
+            let contained = false;
+            let newCards = [];
+            this.state.cards.forEach((stateCard) => {
+                if (stateCard._id.equals(card._id)) {
+                    contained = true;
+                    newCards.push(card);
+                } else {
+                    newCards.push(stateCard);
+                }
+            });
+            if (!contained) {
+                newCards.push(card);
+            }
+            this.setState({cards: newCards});
+        });
+
+        socket.on('updateTitle', (card)=> {
+            let contained = false;
+            let newCards = [];
+            this.state.cards.forEach((stateCard) => {
+                if (stateCard._id.equals(card._id)) {
+                    contained = true;
+                    newCards.push(card);
+                } else {
+                    newCards.push(stateCard);
+                }
+            });
+            if (!contained) {
+                newCards.push(card);
+            }
+            this.setState({cards: newCards});
+        });
+    }
+
+    setNotebookState() {
+        let url = "http://collabor8u.herokuapp.com/notebooks/" + this.state.notebook_id;
+
+        $.ajax({
+            dataType: "json",
+            crossDomain: true,
+            contentType: 'application/json',
+            method: 'GET',
+            url: url,
+            error: (e) => {
+                console.log(e);
+                console.log("status: " + e.status);
+            },
+            success: (data) => {
+                this.setState({
+                    cards: data.cards,
+                    topics: data.topics
+                });
+            },
+        });
+    }
+
+    modalTopicsOnChange(e) {
+        this.setState({modal_current_topics: e.target.value});
+    }
+
+    modalTextOnChange(e) {
+        this.setState({modal_current_text: e.target.value});
+
+        if (this.state.modal_is_edit) {
+            socket.emit('edit', {
+                notebook: this.state.notebook_id,
+                card_id: this.state.current_card,
+                text: e.target.value
+            });
+        }
+    }
+
+    modalTitleOnChange(e) {
+        this.setState({modal_current_title: e.target.value});
+
+        if (this.state.modal_is_edit) {
+            socket.emit('updateTitle', {
+                notebook: this.state.notebook_id,
+                card_id: this.state.current_card,
+                title: e.target.value
+            });
+        }
+    }
+
+    modalOkButtonClick(e) {
+        let is_edit = this.state.modal_is_edit;
+        let content = this.state.modal_current_text;
+        if (is_edit) {
+            socket.emit('finishEdit', {notebook: this.state.notebook_id, card_id: this.state.current_card});
+        } else {
+            let topics = this.state.modal_current_topics.split(',');
+
+            let url = "http://collabor8u.herokuapp.com/notebooks/" + this.state.notebook_id + "/cards/new";
+            let object = {
+                session_token: this.state.session_token,
+                title: this.state.modal_current_title,
+                topics: topics
+            };
+
+            $.ajax({
+                dataType: "json",
+                crossDomain: true,
+                contentType: 'application/json',
+                method: 'POST',
+                data: JSON.stringify(object),
+                url: url,
+                error: (e) => {
+                    console.log(e);
+                    console.log("status: " + e.status);
+                },
+                success: (data) => {
+                    let cards = this.state.cards;
+                    cards.push(data);
+                    this.setState({
+                        cards: cards
+                    });
+
+                    socket.emit('edit', {notebook: this.state.notebook_id, card_id: data._id, text: content});
+                },
+            });
+        }
+    }
+
+    openModal(isEdit) {
+        // Check target to determine if its edit or create
+        // let opp = e.target.attributes.getNamedItem("dataOppType");
+        // let isEdit = (opp == "edit");
+
+        if (isEdit) {
+            socket.emit('beginEdit', {notebook: this.state.notebook_id, card_id: this.state.current_card});
+        }
+
+        this.setState({modal_is_open: true,
+                     modal_is_edit: isEdit});
+    }
+
+    createCard(tag) {
+        // Call modal, put bottom lines there
+        this.openModal(false);
+        // this.state.cards.push(tag);
+        // this.setState({ cards: this.state.cards });
     }
 
     render() {
         return (
             <div className="NotesMain">
+                <Modal
+                    isOpen={this.state.modal_is_open}
+                    onRequestClose={this.modalOkButtonClick}
+                    style={customStyle}
+                    contentLabel="Add Project">
+                    <h1>Notes</h1>
+                    <input placeholder="Title"
+                           onChange={this.modalTitleOnChange}
+                    />
+                    <input placeholder="Text" onChange={this.modalTextOnChange}/>
+                    <input placeholder="Topics"
+                           onChange={this.modalTopicsOnChange}
+                           disabled={this.state.modal_is_edit}
+                    />
+                    <button onClick={this.modalOkButtonClick}>Ok</button>
+                </Modal>
                 <div className="TopicHeader">Topics</div>
                 <div className="TopicBody">
                 <CardAddForm createCard={this.createCard.bind(this)} />
                 <CardsList
-                    tags={this.state.tags}
+                    tags={this.state.topics}
                     cards={this.state.cards}
-                    toggleTask={this.toggleTask.bind(this)}
-                    saveTask={this.saveTask.bind(this)}
-                    deleteTask={this.deleteTask.bind(this)}
                 />
                 </div>
             </div>
         );
-    }
-
-    toggleTask(task) {
-        const foundTodo = _.find(this.state.todos, todo => todo.task === task);
-        foundTodo.isCompleted = !foundTodo.isCompleted;
-        this.setState({ todos: this.state.todos });
-    }
-
-    createCard(tag) {
-        // Call modal, put bottom lines there
-        console.log("shit is happening");
-        this.state.cards.push(tag);
-        this.setState({ cards: this.state.cards });
-    }
-
-    saveTask(oldTask, newTask) {
-        const foundTodo = _.find(this.state.todos, todo => todo.task === oldTask);
-        foundTodo.task = newTask;
-        this.setState({ todos: this.state.todos });
-    }
-
-    deleteTask(taskToDelete) {
-        _.remove(this.state.todos, todo => todo.task === taskToDelete);
-        this.setState({ todos: this.state.todos });
     }
 }
 

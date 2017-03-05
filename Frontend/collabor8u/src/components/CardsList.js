@@ -4,11 +4,14 @@ import CardListHeader from './CardListHeader';
 import CardListItem from './CardListItem';
 
 export default class CardsList extends React.Component {
-    renderItems() {
-        const props = _.omit(this.props, 'cards');
+    renderTopics() {
+        return _.map(this.props.topics, (topic) =>
+            <CardListItem key={topic.key} title={topic.title} />);
+    }
 
-        return _.map(this.props.cards, (card, index) =>
-            <CardListItem key={index} {...card} {...props} />);
+    renderCards() {
+        return _.map(this.props.cards, (card) =>
+            <CardListItem key={card.key} body={card.body} />);
     }
 
     render() {
@@ -16,10 +19,10 @@ export default class CardsList extends React.Component {
             <div>
                 <CardListHeader />
                 <div className="LeftPanel">
-                    {this.renderItems()}
+                    {this.renderTopics()}
                 </div>
                 <div className="RightPanel">
-                    {this.renderItems()}
+                    {this.renderCards()}
                 </div>
             </div>
         );
