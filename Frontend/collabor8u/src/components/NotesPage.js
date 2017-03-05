@@ -187,6 +187,7 @@ class NotesPage extends React.Component {
     }
 
     modalOkButtonClick(e) {
+        this.setState({modal_is_open: false});
         if (this.state.modal_current_topics &&
             this.state.modal_current_text &&
             this.state.modal_current_title) {
@@ -217,7 +218,6 @@ class NotesPage extends React.Component {
                         console.log("status: " + e.status);
                     },
                     success: (data) => {
-                        this.setState({modal_is_open: false});
                         this.socket.emit('edit', {notebook: this.state.notebook_id, card_id: data._id, text: content});
                         this.forceUpdate();
                         parent.setNotebookState();
@@ -296,18 +296,18 @@ class NotesPage extends React.Component {
                     contentLabel="Add Project">
                     <h1>Notes</h1>
                     <input placeholder="Title"
-                           onChange={this.modalTitleOnChange}>{this.state.modal_current_title}</input>
-                    <input placeholder="Text" onChange={this.modalTextOnChange}>{this.state.modal_current_text}</input>
+                           onChange={this.modalTitleOnChange} value={(this.state.modal_is_edit) ?this.state.modal_current_title:''}/>
+                    <input placeholder="Text" onChange={this.modalTextOnChange} value={(this.state.modal_is_edit) ?this.state.modal_current_text:''}/>
                     <input placeholder="Topics"
                            onChange={this.modalTopicsOnChange}
-                           disabled={this.state.modal_is_edit}>{this.state.modal_current_topics}</input>
+                           disabled={this.state.modal_is_edit} value={(this.state.modal_is_edit) ? this.state.modal_current_topics : ''} />
                     <button onClick={this.modalOkButtonClick}>Ok</button>
                 </Modal>
                 <Modal
                     isOpen={this.state.add_user_is_open}
                     onRequestClose={this.addUserClick}
                     style={customStyle}
-                    contentLabel="Add Project">
+                    contentLabel="Add User">
                     <h1>Add User</h1>
                     <input placeholder="Email"
                            onChange={this.userEmailOnChange}/>
