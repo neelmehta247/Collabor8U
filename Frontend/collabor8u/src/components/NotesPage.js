@@ -138,8 +138,9 @@ class NotesPage extends React.Component {
             success: (data) => {
                 this.setState({
                     cards: data.cards,
-                    topics: data.topics
+                    topics: data.topics,
                 });
+                this.forceUpdate();
             },
         });
     }
@@ -248,13 +249,11 @@ class NotesPage extends React.Component {
                     contentLabel="Add Project">
                     <h1>Notes</h1>
                     <input placeholder="Title"
-                           onChange={this.modalTitleOnChange}
-                    />
+                           onChange={this.modalTitleOnChange}/>
                     <input placeholder="Text" onChange={this.modalTextOnChange}/>
                     <input placeholder="Topics"
                            onChange={this.modalTopicsOnChange}
-                           disabled={this.state.modal_is_edit}
-                    />
+                           disabled={this.state.modal_is_edit}/>
                     <button onClick={this.modalOkButtonClick}>Ok</button>
                 </Modal>
                 <div className="TopicHeader">Topics</div>

@@ -27,7 +27,7 @@ class Notebook extends React.Component {
 
     notebookOnClick(event) {
         let key = this.state.data_key;
-        browserHistory.push('/notebook/' + key);
+        browserHistory.push('/notes/' + key);
     }
 
     render() {
