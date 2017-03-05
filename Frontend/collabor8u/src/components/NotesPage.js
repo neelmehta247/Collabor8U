@@ -75,10 +75,10 @@ class NotesPage extends React.Component {
         });
 
         this.socket.on('finishEdit', (card)=> {
-            console.log(card);
             let contained = false;
+            let newCards = [];
             this.state.cards.forEach((stateCard) => {
-                if (stateCard._id == card._id) {
+                if (stateCard._id.toString() == card._id.toString()) {
                     contained = true;
                     this.state.cards.pop();
                     this.state.cards.push(card);
@@ -87,9 +87,7 @@ class NotesPage extends React.Component {
             if (!contained) {
                 this.state.cards.push(card);
             }
-            this.forceUpdate();
-            this.setNotebookState();
-            parent.setState({cards: this.state.cards});
+            this.setState({cards: newCards});
         });
 
         this.socket.on('edit', (card)=> {
@@ -118,13 +116,15 @@ class NotesPage extends React.Component {
             this.state.cards.forEach((stateCard) => {
                 if (stateCard._id.toString() == card._id.toString()) {
                     contained = true;
-                    this.state.cards.pop();
-                    this.state.cards.push(card);
+                    newCards.push(card);
+                } else {
+                    newCards.push(stateCard);
                 }
             });
             if (!contained) {
-                this.state.cards.push(card);
+                newCards.push(card);
             }
+            this.setState({cards: newCards});
         });
     }
 
@@ -225,7 +225,6 @@ class NotesPage extends React.Component {
                     },
                     success: (data) => {
                         this.socket.emit('edit', {notebook: this.state.notebook_id, card_id: data._id, text: content});
-                        this.socket.emit('finishEdit', {notebook: this.state.notebook_id, card_id: data._id});
                         this.forceUpdate();
                         parent.setNotebookState();
                     },

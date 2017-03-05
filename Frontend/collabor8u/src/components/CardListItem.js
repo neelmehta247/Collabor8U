@@ -18,23 +18,8 @@ export default class CardListItem extends React.Component {
         console.log(this.state.card_id);
     }
 
-    getTopic(id) {
-        let all_topics = this.state.all_topics;
-        let topic = null;
-        all_topics.forEach((_topic) => {
-            if (_topic._id == id) {
-                topic = _topic;
-            }
-        });
-        return topic;
-    }
-
     renderTopics() {
-        var topics = [];
-        this.state.topics.forEach((id) => {
-            topics.push(this.getTopic(id));
-        });
-        return _.map(topics, (topic) =>
+        return _.map(this.state.topics, (topic) =>
             (<Button bsStyle="primary" dataKey={topic._id}>{topic.name}</Button>));
     }
 
@@ -45,7 +30,7 @@ export default class CardListItem extends React.Component {
             topics.push(this.getTopic(id));
         });
         this.props.editCard({
-            topics: topics,
+            topics: this.state.all_topics,
             text: this.state.body,
             title: this.state.title,
             _id: this.state.card_id
