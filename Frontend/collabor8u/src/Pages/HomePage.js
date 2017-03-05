@@ -1,5 +1,6 @@
 import React from "react";
 import cookie from "react-cookie";
+import {browserHistory} from "react-router";
 import $ from "jquery";
 import './HomePage.css';
 import plus from "../img/plus.png";
@@ -13,8 +14,8 @@ class Projects extends React.Component {
 }
 
 class HomePage extends React.Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         let url = "http://collabor8u.heroku.com/users/login";
         let accessToken = cookie.load("accessToken");
         this.state = {
@@ -24,6 +25,7 @@ class HomePage extends React.Component {
         this.onAddBtnClick = this.onAddBtnClick.bind(this);
 
         let obje = {facebook_access_token: accessToken};
+        console.log(JSON.stringify(obje));
         $.ajax({
             dataType: "json",
             crossDomain: true,
@@ -33,6 +35,8 @@ class HomePage extends React.Component {
             data: JSON.stringify(obje),
         }).done((data) => {
             this.setState({session_object: data})
+        }).fail(function() {
+            browserHistory.push('/');
         });
     }
 
