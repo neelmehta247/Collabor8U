@@ -1,7 +1,10 @@
 var mongoose = require('mongoose');
 
 var cardSchema = mongoose.Schema({
-    text: String,
+    text: {
+        type: String,
+        default: ''
+    },
     title: String,
     is_being_edited: {
         type: Boolean,

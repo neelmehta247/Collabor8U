@@ -4,6 +4,8 @@ var router = express.Router();
 var Notebook = require('../models/notebook');
 var Session = require('../models/session');
 var User = require('../models/user');
+var Card = require('../models/card');
+var Topic = require('../models/topic');
 
 router.get('/:id', function (request, result) {
     Notebook.findOne({_id: request.params.id})
@@ -18,6 +20,83 @@ router.get('/:id', function (request, result) {
             return result.status(400).send('user doesn\'t exist');
         } else {
             return result.json(notebook);
+        }
+    });
+});
+
+router.post('/:id/cards/new', function (request, result) {
+    if (request.body.session_token === undefined) {
+        return result.status(400).send('no session token');
+    }
+
+    Session.findOne({session_token: request.body.session_token})
+        .populate('user').exec(function (err, session) {
+        if (err) {
+            console.error(err);
+            return result.status(500).send('error');
+        }
+
+        if (session == null) {
+            console.error('session doesn\'t exist');
+            return result.status(400).send('session doesn\'t exist');
+        }
+
+        var contained = false;
+        session.user.notebooks.forEach(function (notebook) {
+            if (notebook.toString() == request.params.id) {
+                contained = true;
+            }
+        });
+
+        if (!contained) {
+            console.error('no notebook permissions');
+        } else {
+            if (request.body.title === undefined || request.body.topics === undefined) {
+                console.error('missing params');
+                return result.status(400).send('missing params');
+            } else {
+                Notebook.findOne({_id: request.params.id}, function (err, notebook) {
+                    if (err) {
+                        console.error(err);
+                        return result.status(500).send('error');
+                    }
+
+                    var newCard = new Card({title: request.body.title});
+                    newCard.save();
+
+                    notebook.cards.push(newCard);
+                    notebook.save();
+
+                    request.body.topics.forEach(function (topic) {
+                        Topic.findOne({name: topic, notebook: notebook._id}, function (err, topic) {
+                            if (err) {
+                                console.error(err);
+                                return result.status(500).send('error');
+                            }
+
+                            if (topic == null) {
+                                var newTopic = new Topic({name: topic, notebook: notebook._id});
+                                newTopic.cards.push(newCard);
+                                newTopic.save();
+
+                                notebook.topics.push(topic);
+                                notebook.save();
+
+                                newCard.topics.push(newTopic);
+                                newCard.save();
+                            } else {
+                                topic.cards.push(newCard);
+                                topic.save();
+
+                                newCard.topics.push(topic);
+                                newCard.save();
+                            }
+                        });
+                    });
+
+                    return result.json(newCard);
+                });
+            }
         }
     });
 });
