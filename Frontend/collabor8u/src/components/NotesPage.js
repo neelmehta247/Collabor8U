@@ -35,6 +35,8 @@ class NotesPage extends React.Component {
             topics: [],
             cards: [],
             current_card: {},
+            add_user_is_open: false,
+            user_email: "",
         };
 
         this.socket = io.connect('http://collabor8u.herokuapp.com/');
@@ -43,6 +45,8 @@ class NotesPage extends React.Component {
         this.modalTextOnChange = this.modalTextOnChange.bind(this);
         this.modalTopicsOnChange = this.modalTopicsOnChange.bind(this);
         this.modalTitleOnChange = this.modalTitleOnChange.bind(this);
+        this.userEmailOnChange = this.userEmailOnChange.bind(this);
+        this.addUserClick = this.addUserClick.bind(this);
 
         this.setNotebookState();
 
@@ -209,7 +213,7 @@ class NotesPage extends React.Component {
                     success: (data) => {
                         this.setState({modal_is_open: false});
                         this.socket.emit('edit', {notebook: this.state.notebook_id, card_id: data._id, text: content});
-                        this.forceUpdate()
+                        this.forceUpdate();
                         parent.setNotebookState();
                     },
                 });
@@ -239,6 +243,43 @@ class NotesPage extends React.Component {
         // this.setState({ cards: this.state.cards });
     }
 
+    userEmailOnChange(e) {
+        this.setState({
+            user_email: e.target.value
+        });
+    }
+
+    addUserClick(e) {
+        this.setState({
+            add_user_is_open: false
+        });
+
+        let url = "http://collabor8u.herokuapp.com/notebooks/" + this.state.notebook_id + '/add_user';
+        let object = {session_token: this.state.session_token, email: this.state.user_email};
+
+        $.ajax({
+            dataType: "json",
+            crossDomain: true,
+            contentType: 'application/json',
+            method: 'POST',
+            data: JSON.stringify(object),
+            url: url,
+            error: (e) => {
+                console.log(e);
+                console.log("status: " + e.status);
+            },
+            success: (data) => {
+                
+            },
+        });
+    }
+
+    addUser() {
+        this.setState({
+            add_user_is_open: true
+        });
+    }
+
     render() {
         return (
             <div className="NotesMain">
@@ -256,9 +297,19 @@ class NotesPage extends React.Component {
                            disabled={this.state.modal_is_edit}/>
                     <button onClick={this.modalOkButtonClick}>Ok</button>
                 </Modal>
+                <Modal
+                    isOpen={this.state.add_user_is_open}
+                    onRequestClose={this.addUserClick}
+                    style={customStyle}
+                    contentLabel="Add Project">
+                    <h1>Add User</h1>
+                    <input placeholder="Email"
+                           onChange={this.userEmailOnChange}/>
+                    <button onClick={this.addUserClick}>Ok</button>
+                </Modal>
                 <div className="TopicHeader">Topics</div>
                 <div className="TopicBody">
-                    <CardAddForm createCard={this.createCard.bind(this)}/>
+                    <CardAddForm createCard={this.createCard.bind(this)} addUser={this.addUser.bind(this)}/>
                     <CardsList
                         topics={this.state.topics}
                         cards={this.state.cards}
