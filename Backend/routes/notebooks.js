@@ -50,7 +50,7 @@ router.post('/:id/add_user', function (request, result) {
                     return result.status(400).send('no user found');
                 }
 
-                Notebook.findOne({_id:request.params.id}, function (err, notebook) {
+                Notebook.findOne({_id: request.params.id}, function (err, notebook) {
                     if (err) {
                         console.error(err);
                         return result.status(500).send('error');
@@ -118,7 +118,7 @@ router.post('/:id/cards/new', function (request, result) {
                             }
 
                             if (topic == null) {
-                                var newTopic = new Topic({name: topic, notebook: notebook._id});
+                                var newTopic = new Topic({name: topic.trim(), notebook: notebook._id});
                                 newTopic.cards.push(newCard);
                                 newTopic.save();
 
