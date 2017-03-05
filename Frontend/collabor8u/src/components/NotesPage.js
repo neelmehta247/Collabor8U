@@ -244,6 +244,12 @@ class NotesPage extends React.Component {
     }
 
     createCard(tag) {
+        this.setState({
+            modal_current_topics: '',
+            modal_current_text: '',
+            modal_current_title: ''
+        });
+
         // Call modal, put bottom lines there
         this.openModal(false);
         // this.state.cards.push(tag);
@@ -297,11 +303,11 @@ class NotesPage extends React.Component {
                     contentLabel="Add Project">
                     <h1>Notes</h1>
                     <input placeholder="Title"
-                           onChange={this.modalTitleOnChange} value={(this.state.modal_is_edit) ?this.state.modal_current_title:''}/>
-                    <input placeholder="Text" onChange={this.modalTextOnChange} value={(this.state.modal_is_edit) ?this.state.modal_current_text:''}/>
+                           onChange={this.modalTitleOnChange} value={this.state.modal_current_title}/>
+                    <input placeholder="Text" onChange={this.modalTextOnChange} value={this.state.modal_current_text}/>
                     <input placeholder="Topics"
                            onChange={this.modalTopicsOnChange}
-                           disabled={this.state.modal_is_edit} value={(this.state.modal_is_edit) ? this.state.modal_current_topics : ''} />
+                           disabled={this.state.modal_is_edit} value={this.state.modal_current_topics}/>
                     <button onClick={this.modalOkButtonClick}>Ok</button>
                 </Modal>
                 <Modal
