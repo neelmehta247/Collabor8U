@@ -1,6 +1,5 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import logo from "../logo.svg";
 
 class NotebookPage extends React.Component {
     constructor() {
@@ -12,7 +11,9 @@ class NotebookPage extends React.Component {
 
     render() {
         return (
-            <div/>
+            <div>
+                {this.state.notebook_id}
+            </div>
         );
     }
 }
