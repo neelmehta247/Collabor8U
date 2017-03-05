@@ -20,7 +20,7 @@ const customStyle = {
     }
 };
 
-const socket = io('http://collabor8u.herokuapp.com');
+const socket = io.connect('http://collabor8u.herokuapp.com');
 
 class NotesPage extends React.Component {
     constructor(props) {
